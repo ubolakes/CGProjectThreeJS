@@ -1,3 +1,9 @@
+/*
+Author: Umberto Laghi
+E-mail: umberto.laghi@studio.unibo.it
+Github: @ubolakes
+*/
+
 import * as THREE from 'three'
 
 export class Box extends THREE.Mesh {
