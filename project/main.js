@@ -86,11 +86,18 @@ camera.position.z = 5;
 // TODO
 // keyboard inputs management
 
+// movement initialization
+initKeyEvents();
 
 // render function
 function render() {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
+
+    // movement management
+    // done at each frame
+    resetVelocity(cube); // resetting speed
+    updateVelocity(cube); // updating speed
 
     cube.update( ground );
 }
