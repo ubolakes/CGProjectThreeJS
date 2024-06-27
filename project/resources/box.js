@@ -39,6 +39,12 @@ export class Box extends THREE.Mesh {
         // computing bottom and top positions
         this.bottom = this.position.y - this.height / 2;
         this.top = this.position.y + this.height / 2;
+        // right and left positions
+        this.right = this.position.x + this.width / 2;
+        this.left = this.position.x - this.width / 2; 
+        // front and back positions
+        this.front = this.position.z + this.depth / 2;
+        this.back = this.position.z - this.depth / 2;
 
         // movement parameters
         this.velocity = velocity;
@@ -46,9 +52,17 @@ export class Box extends THREE.Mesh {
     }
 
     // methods
+    // computes faces position
     updateSides() {
+        // right and left positions
+        this.right = this.position.x + this.width / 2;
+        this.left = this.position.x - this.width / 2; 
+        // bottom and top positions
         this.bottom = this.position.y - this.height / 2;
         this.top = this.position.y + this.height /2;
+        // front and back positions
+        this.front = this.position.z - this.depth / 2;
+        this.back = this.position.z + this.depth / 2;
     }
 
     // comment what it does
@@ -76,8 +90,15 @@ export class Box extends THREE.Mesh {
 } // Box class
 
 function boxCollision({ box0, box1 }) {
+    // checking if box0 is within the box1 boundaries
+    const xCollision = 
+        box0.right >= box1.left && box0.left <= box1.right;
+
     const yCollision = 
         box0.bottom + box0.velocity.y <= box1.top && box0.top >= box1.bottom;
-
-    return yCollision;
+    
+    const zCollision = 
+        box0.front >= box1.back && box0.back <= box1.front;
+    
+    return xCollision && yCollision && zCollision;
 }
