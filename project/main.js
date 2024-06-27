@@ -8,6 +8,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 // importin home made libraries
 import { Box, boxCollision } from './resources/box.js';
+import { instanceEnemy } from './resources/utils.js';
 
 // taking canvas from index.html
 const canvas = document.getElementById("canvas");
@@ -92,26 +93,11 @@ initKeyEvents();
 // enemy instantation
 const enemies = []; // list of enemies
 
-const enemy = new Box({
-    width: 1,
-    height: 1,
-    depth: 1,
-    color: 0xff0000,
-    velocity: {
-        x: 0,
-        y: 0,
-        z: 0.001
-    },
-    position: {
-        x: 0,
-        y: 0,
-        z: -4,
-    },
-    zAcceleration: true
-});
-enemy.castShadow = true;
-scene.add(enemy);
-enemies.push(enemy); // adding to the list
+// keeping track if frames
+// it's used to determine the number of enemies to spawn
+let frames = 0;
+// period of enemy spawning
+let spawnRate = 200;
 
 // render function
 function render() {
@@ -136,5 +122,18 @@ function render() {
             cancelAnimationFrame(animationId);
         }
     });
+
+    if (frames % spawnRate === 0){
+        // decreasing the period length as it stays alive
+        spawnRate = spawnRate > 10 ? spawnRate-10 : spawnRate;
+
+        // instancing a new enemy
+        const enemy = instanceEnemy();
+        scene.add(enemy);
+        enemies.push(enemy); // adding to the list
+    }
+    console.log(spawnRate);
+
+    frames++; // increasing frames number
 }
 render();
