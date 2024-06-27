@@ -73,7 +73,7 @@ export class Box extends THREE.Mesh {
 
         // accelerate on z axis
         if (this.zAcceleration)
-            this.velocity.z += 0.0003;
+            this.velocity.z += 0.001;
 
         this.position.x += this.velocity.x;
         this.position.z += this.velocity.z;
