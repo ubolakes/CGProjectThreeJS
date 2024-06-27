@@ -4,7 +4,7 @@ E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
 
-const velocity = 0.05;
+const velocity = 0.1;
 var keys = {}; // used to store and manage inputs
 
 function initKeyEvents() {
