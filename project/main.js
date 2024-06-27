@@ -8,7 +8,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 // importin home made libraries
 import { Box, boxCollision } from './resources/box.js';
-import { instanceEnemy } from './resources/utils.js';
+import * as UTILS from './resources/utils.js';
 
 // taking canvas from index.html
 const canvas = document.getElementById("canvas");
@@ -27,7 +27,7 @@ camera.position.set(2, 2, 2); // TODO: set correctly
 
 // renderer
 const renderer = new THREE.WebGLRenderer({
-    //alpha: true,
+    alpha: true,
     //antialias: true,
     canvas: canvas
 });
@@ -80,7 +80,7 @@ directionalLight.castShadow = true; // enabling shadow casting
 scene.add(directionalLight);
 
 // setting ambient light
-scene.add(new THREE.AmbientLight(0xFFFFFF, 0.5));
+scene.add(new THREE.AmbientLight(0xFFFFFF, 1.5));
 
 camera.position.z = 5;
 
@@ -128,7 +128,7 @@ function render() {
         spawnRate = spawnRate > 10 ? spawnRate-10 : spawnRate;
 
         // instancing a new enemy
-        const enemy = instanceEnemy();
+        const enemy = UTILS.instanceEnemy();
         scene.add(enemy);
         enemies.push(enemy); // adding to the list
     }

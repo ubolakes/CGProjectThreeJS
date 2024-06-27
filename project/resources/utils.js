@@ -20,7 +20,7 @@ export function instanceEnemy() {
         position: {
             x: (Math.random() - 0.5) * 10,
             y: 0,
-            z: -15,
+            z: -25,
         },
         zAcceleration: true
     });
