@@ -7,7 +7,7 @@ Github: @ubolakes
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 // importin home made libraries
-import { Box } from './resources/box.js';
+import { Box, boxCollision } from './resources/box.js';
 
 // taking canvas from index.html
 const canvas = document.getElementById("canvas");
@@ -89,9 +89,35 @@ camera.position.z = 5;
 // movement initialization
 initKeyEvents();
 
+// enemy instantation
+const enemies = []; // list of enemies
+
+const enemy = new Box({
+    width: 1,
+    height: 1,
+    depth: 1,
+    color: 0xff0000,
+    velocity: {
+        x: 0,
+        y: 0,
+        z: 0.001
+    },
+    position: {
+        x: 0,
+        y: 0,
+        z: -4,
+    },
+    zAcceleration: true
+});
+enemy.castShadow = true;
+scene.add(enemy);
+enemies.push(enemy); // adding to the list
+
 // render function
 function render() {
-    requestAnimationFrame(render);
+    // setting an id to the frame to stop the game in case of collision with enemy
+    const animationId = requestAnimationFrame(render);
+    // rendering scene
     renderer.render(scene, camera);
 
     // movement management
@@ -100,5 +126,15 @@ function render() {
     updateVelocity(cube); // updating speed
 
     cube.update( ground );
+
+    // updating for each enemy
+    enemies.forEach(enemy => {
+        enemy.update(ground);
+
+        // collision with player
+        if (boxCollision({ box0: cube, box1: enemy })) {
+            cancelAnimationFrame(animationId);
+        }
+    });
 }
 render();
