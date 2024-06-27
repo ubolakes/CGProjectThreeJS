@@ -74,8 +74,7 @@ scene.add(cube);
 
 // setting directional light
 const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
-directionalLight.position.y = 3;
-directionalLight.position.z = 1;
+directionalLight.position.set(-1, 4, 1);
 directionalLight.castShadow = true; // enabling shadow casting
 scene.add(directionalLight);
 
