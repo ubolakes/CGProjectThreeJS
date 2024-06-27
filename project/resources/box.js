@@ -21,7 +21,8 @@ export class Box extends THREE.Mesh {
             x: 0,
             y: 0,
             z: 0
-        }
+        },
+        zAcceleration = false
     }) {
         // calling constructor of extended class
         super(
@@ -49,6 +50,7 @@ export class Box extends THREE.Mesh {
         // movement parameters
         this.velocity = velocity;
         this.gravity = -0.002; // to be tuned
+        this.zAcceleration = zAcceleration;
     }
 
     // methods
@@ -61,13 +63,17 @@ export class Box extends THREE.Mesh {
         this.bottom = this.position.y - this.height / 2;
         this.top = this.position.y + this.height /2;
         // front and back positions
-        this.front = this.position.z - this.depth / 2;
-        this.back = this.position.z + this.depth / 2;
+        this.front = this.position.z + this.depth / 2;
+        this.back = this.position.z - this.depth / 2;
     }
 
     // comment what it does
     update(ground){
         this.updateSides();
+
+        // accelerate on z axis
+        if (this.zAcceleration)
+            this.velocity.z += 0.0003;
 
         this.position.x += this.velocity.x;
         this.position.z += this.velocity.z;
@@ -89,7 +95,7 @@ export class Box extends THREE.Mesh {
     }
 } // Box class
 
-function boxCollision({ box0, box1 }) {
+export function boxCollision({ box0, box1 }) {
     // checking if box0 is within the box1 boundaries
     const xCollision = 
         box0.right >= box1.left && box0.left <= box1.right;
