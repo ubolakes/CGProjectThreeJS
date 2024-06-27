@@ -95,7 +95,7 @@ function render() {
     renderer.render(scene, camera);
 
     // movement management
-    // done at each frame
+    // called at each frame
     resetVelocity(cube); // resetting speed
     updateVelocity(cube); // updating speed
 
