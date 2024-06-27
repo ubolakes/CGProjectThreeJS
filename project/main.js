@@ -15,6 +15,9 @@ const canvas = document.getElementById("canvas");
 
 // scene
 const scene = new THREE.Scene();
+// instancing the skybox
+const loader = new THREE.CubeTextureLoader();
+scene.background = UTILS.loadSkybox(loader);
 
 // camera
 const fov = 75;
