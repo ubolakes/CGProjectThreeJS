@@ -38,9 +38,6 @@ document.body.appendChild(renderer.domElement); // using the canvas to render
 // controls
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// extending the Box class - TODO: move it in a separate file
-// moved to another file
-
 // instancing ground floor
 const ground = new Box({
     width: 10,
