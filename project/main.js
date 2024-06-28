@@ -127,7 +127,6 @@ function render() {
         scene.add(enemy);
         enemies.push(enemy); // adding to the list
     }
-    console.log(spawnRate);
 
     frames++; // increasing frames number
 }
