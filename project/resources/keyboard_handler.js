@@ -15,7 +15,7 @@ function initKeyEvents() {
 
 function updateVelocity( player ) {
     // handling different inputs
-    if (keys['KeyW']) player.velocity.z = -velocity ;
+    if (keys['KeyW']) player.velocity.z = -velocity;
     if (keys['KeyA']) player.velocity.x = -velocity;
     if (keys['KeyS']) player.velocity.z = velocity;
     if (keys['KeyD']) player.velocity.x = velocity;
