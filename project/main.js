@@ -45,12 +45,12 @@ const controls = new OrbitControls(camera, renderer.domElement);
 const ground = new Box({
     width: 10,
     height: 0.5,
-    depth: 50,
+    depth: 35,
     color: 0x0369a1,
     position: {
         x: 0,
         y: -2, // positioned under cube
-        z: 0
+        z: -10
     }
 });
 ground.receiveShadow = true; // shadows can be casted
@@ -80,11 +80,6 @@ scene.add(directionalLight);
 
 // setting ambient light
 scene.add(new THREE.AmbientLight(0xFFFFFF, 1.5));
-
-camera.position.z = 5;
-
-// TODO
-// keyboard inputs management
 
 // movement initialization
 initKeyEvents();
