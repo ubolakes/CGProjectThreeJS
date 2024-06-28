@@ -19,6 +19,7 @@ function updateVelocity( player ) {
     if (keys['KeyA']) player.velocity.x = -velocity;
     if (keys['KeyS']) player.velocity.z = velocity;
     if (keys['KeyD']) player.velocity.x = velocity;
+    if (keys['Space']) player.velocity.y = 0.05;
 }
 
 // TODO: move to a utils.js like file?
