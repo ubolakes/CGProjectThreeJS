@@ -108,3 +108,8 @@ export function boxCollision({ box0, box1 }) {
     
     return xCollision && yCollision && zCollision;
 }
+
+export function fallOff({ box0, box1 }) {
+    // checking if box0 top is below box1 bottom
+    return box0.top < box1.bottom;
+}

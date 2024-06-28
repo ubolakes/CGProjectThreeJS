@@ -7,7 +7,7 @@ Github: @ubolakes
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 // importin home made libraries
-import { Box, boxCollision } from './resources/box.js';
+import { Box, boxCollision, fallOff } from './resources/box.js';
 import * as UTILS from './resources/utils.js';
 
 // taking canvas from index.html
@@ -112,7 +112,8 @@ function render() {
         enemy.update(ground);
 
         // collision with player
-        if (boxCollision({ box0: player, box1: enemy })) {
+        if (boxCollision({ box0: player, box1: enemy }) || 
+            fallOff({ box0: player, box1: ground})) {
             cancelAnimationFrame(animationId);
         }
     });
