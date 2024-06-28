@@ -56,8 +56,8 @@ const ground = new Box({
 ground.receiveShadow = true; // shadows can be casted
 scene.add(ground);
 
-// instancing cube
-const cube = new Box({
+// instancing player controlled cube
+const player = new Box({
     width: 1,
     height: 1,
     depth: 1,
@@ -68,8 +68,8 @@ const cube = new Box({
     },
     ground: ground
 });
-cube.castShadow = true; // enabling shadow casting 
-scene.add(cube);
+player.castShadow = true; // enabling shadow casting 
+scene.add(player);
 
 
 // setting directional light
@@ -102,17 +102,17 @@ function render() {
 
     // movement management
     // called at each frame
-    resetVelocity(cube); // resetting speed
-    updateVelocity(cube); // updating speed
+    resetVelocity( player ); // resetting speed
+    updateVelocity( player ); // updating speed
 
-    cube.update( ground );
+    player.update( ground );
 
     // updating for each enemy
     enemies.forEach(enemy => {
         enemy.update(ground);
 
         // collision with player
-        if (boxCollision({ box0: cube, box1: enemy })) {
+        if (boxCollision({ box0: player, box1: enemy })) {
             cancelAnimationFrame(animationId);
         }
     });
