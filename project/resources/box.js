@@ -78,6 +78,9 @@ export class Box extends THREE.Mesh {
         this.position.x += this.velocity.x;
         this.position.z += this.velocity.z;
 
+        // checking if it can jump
+        this.canJump = (this.bottom - 0.001).toFixed(2) == ground.top.toFixed(2) ? true : false;
+
         this.applyGravity(ground);
     }
 
