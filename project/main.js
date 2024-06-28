@@ -26,7 +26,7 @@ const near = 0.1;
 const far = 100;
 const camera = new THREE.PerspectiveCamera(fov, aspectRatio, near, far);
 
-camera.position.set(2, 2, 2); // TODO: set correctly
+camera.position.set(4.6, 2.7, 8);
 
 // renderer
 const renderer = new THREE.WebGLRenderer({
