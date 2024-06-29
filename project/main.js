@@ -39,7 +39,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement); // using the canvas to render
 
 // controls
-//const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 
 // instancing ground floor
 const ground = new Box({
@@ -79,11 +79,27 @@ directionalLight.castShadow = true; // enabling shadow casting
 scene.add(directionalLight);
 
 // setting ambient light
-scene.add(new THREE.AmbientLight(0xFFFFFF, 1.5));
+scene.add(new THREE.AmbientLight(0xFFFFFF, 0.5));
 
 // movement initialization
 initKeyEvents();
 initTouchEvents(canvas);
+
+// adding dat.gui
+//UTILS.addDatGui();
+
+// instancing spotlight to follow the player controlled mesh
+const spotLight = new THREE.SpotLight(0xffffff);
+spotLight.position.set(0, 10, 0);
+spotLight.castShadow = true;
+spotLight.intensity = 200;
+spotLight.angle = Math.PI / 15;
+spotLight.distance = 1000;
+// setting the spotLight to follow the player controlled mesh
+spotLight.target = player;
+
+scene.add(spotLight);
+//console.log(spotLight.target.position)
 
 // enemy instantation
 const enemies = []; // list of enemies
@@ -126,7 +142,7 @@ function render() {
         // instancing a new enemy
         const enemy = UTILS.instanceEnemy();
         scene.add(enemy);
-        enemies.push(enemy); // adding to the list
+        enemies.push(enemy); // adding to the list        
     }
 
     frames++; // increasing frames number
