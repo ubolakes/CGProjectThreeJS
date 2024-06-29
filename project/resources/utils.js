@@ -40,3 +40,20 @@ export function loadSkybox( loader ) {
     ]);
     return texture;
 }
+
+// params for data.GUI
+export const params = {
+    spotLightEnabled: false
+};
+
+function toggleSpotlight() {
+    params.spotLightEnabled = !params.spotLightEnabled;
+}
+
+export function addDatGui( canvas ) {
+    let gui = new dat.gui.GUI( {autoPlace: true});
+
+    gui.add(params, 'spotLightEnabled').name('Toggle spotlight').onChange((v) => {
+        toggleSpotlight
+    });
+}
