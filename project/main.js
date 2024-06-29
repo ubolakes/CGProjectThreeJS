@@ -39,7 +39,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement); // using the canvas to render
 
 // controls
-const controls = new OrbitControls(camera, renderer.domElement);
+//const controls = new OrbitControls(camera, renderer.domElement);
 
 // instancing ground floor
 const ground = new Box({
@@ -83,6 +83,7 @@ scene.add(new THREE.AmbientLight(0xFFFFFF, 1.5));
 
 // movement initialization
 initKeyEvents();
+initTouchEvents(canvas);
 
 // enemy instantation
 const enemies = []; // list of enemies
