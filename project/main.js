@@ -6,7 +6,7 @@ Github: @ubolakes
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-// importin home made libraries
+// importing home made libraries
 import { Box, boxCollision, fallOff } from './resources/box.js';
 import * as UTILS from './resources/utils.js';
 
