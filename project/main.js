@@ -41,6 +41,9 @@ document.body.appendChild(renderer.domElement); // using the canvas to render
 // controls
 const controls = new OrbitControls(camera, renderer.domElement);
 
+// dat.GUI
+UTILS.addDatGui(canvas);
+
 // instancing ground floor
 const ground = new Box({
     width: 10,
@@ -85,9 +88,6 @@ scene.add(new THREE.AmbientLight(0xFFFFFF, 0.5));
 initKeyEvents();
 initTouchEvents(canvas);
 
-// adding dat.gui
-//UTILS.addDatGui();
-
 // instancing spotlight to follow the player controlled mesh
 const spotLight = new THREE.SpotLight(0xffffff);
 spotLight.position.set(0, 10, 0);
@@ -97,9 +97,6 @@ spotLight.angle = Math.PI / 15;
 spotLight.distance = 1000;
 // setting the spotLight to follow the player controlled mesh
 spotLight.target = player;
-
-scene.add(spotLight);
-//console.log(spotLight.target.position)
 
 // enemy instantation
 const enemies = []; // list of enemies
@@ -143,6 +140,13 @@ function render() {
         const enemy = UTILS.instanceEnemy();
         scene.add(enemy);
         enemies.push(enemy); // adding to the list        
+    }
+
+    // checking every 20 frames to reduce overhead
+    if (frames % 10 === 0) {
+        // checking if the spotlight needs to be used in the scene
+        if (UTILS.params.spotLightEnabled) scene.add(spotLight);
+        else scene.remove(spotLight);
     }
 
     frames++; // increasing frames number
