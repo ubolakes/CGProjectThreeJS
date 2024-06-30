@@ -17,6 +17,8 @@ let renderer, scene, camera;
 let player, ground;
 // reflection
 let mirrorCamera, mirror;
+let renderTarget;
+let scene2, camera2;
 // optional lights
 let spotLight;
 // enemies
@@ -112,22 +114,56 @@ export async function init( canvas ) {
     spotLight.target = player;
 
     // mirror
-    // cubeRenderTarget
-    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 512 ); // TODO: set this value editable at runtime
-    cubeRenderTarget.texture.type = THREE.HalfFloatType;
-    // mirror camera
-    mirrorCamera = new THREE.CubeCamera( 0.01, 100, cubeRenderTarget );
-    // material
-    const mirrorMaterial = new THREE.MeshStandardMaterial({
-        envMap: cubeRenderTarget.texture,
-        roughness: 0.01,
-        metalness: 1
+    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 128, { //TODO: make value settable by user
+        format: THREE.RGBFormat,
+        generateMipmaps: true,
+        minFilter: THREE.LinearMipmapLinearFilter,
+        encoding: THREE.sRGBEncoding
     });
-    mirror = new THREE.Mesh(new THREE.BoxGeometry(0.1, 4, 35), mirrorMaterial);
-    mirrorCamera.position.set(-6, 0, -10);
-    mirror.position.set(-6, 0, -10);
-    //mirror.rotation.y = Math.PI / 2; // rotation about the y axis
-    //mirrorCamera.position.copy(mirror.position);
+    // camera to capture what happens along vertices
+    mirrorCamera = new THREE.CubeCamera(1, 100000, cubeRenderTarget);
+    mirrorCamera.position.set(-6, 1, -4);
+    mirrorCamera.rotation.y = Math.PI / 2;
+
+    scene2 = new THREE.Scene();
+    camera2 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 100);
+    // shader material to reflect
+    const material = new THREE.ShaderMaterial({
+        uniforms: {
+            cubemap: {value: cubeRenderTarget.texture}
+        },
+        vertexShader: `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            uniform samplerCube cubemap;
+            varying vec2 vUv;
+
+            void main() {
+                vec3 direction = normalize(vec3(vUv * 2.0 - 1.0, 1.0));
+                vec3 color = textureCube(cubemap, direction).rgb;
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `,
+        side: THREE.DoubleSide
+    });
+    
+    // geometry on which to stick the reflection
+    const reflection = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+    scene2.add(reflection);
+
+    renderTarget = new THREE.WebGLRenderTarget(512, 512);
+    // geometry with the reflection attached
+    const mirrorMaterial = new THREE.MeshBasicMaterial({ map: renderTarget.texture});
+    mirror = new THREE.Mesh(new THREE.PlaneGeometry(7, 7), mirrorMaterial);
+    // setting position
+    mirror.position.set(-6, 1, -4);
+    mirror.rotation.y = Math.PI / 2;
+
 }
 
 
@@ -138,7 +174,9 @@ export function render() {
     
     // reflection
     mirrorCamera.update(renderer, scene);
-
+    renderer.setRenderTarget(renderTarget);
+    renderer.render(scene2, camera2);
+    renderer.setRenderTarget(null);
     // rendering scene
     renderer.render(scene, camera);
 
