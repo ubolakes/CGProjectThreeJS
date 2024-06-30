@@ -8,7 +8,7 @@ import { Box } from './box.js'
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
-export function instanceEnemy() {
+export function instanceObstacle() {
     const enemy = new Box({
         width: 1,
         height: 1,

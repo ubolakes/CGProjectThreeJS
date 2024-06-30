@@ -206,7 +206,7 @@ export function render() {
         spawnRate = spawnRate > 10 ? spawnRate-10 : spawnRate;
 
         // instancing a new enemy
-        const enemy = UTILS.instanceEnemy();
+        const enemy = UTILS.instanceObstacle();
         scene.add(enemy);
         enemies.push(enemy); // adding to the list        
     }
