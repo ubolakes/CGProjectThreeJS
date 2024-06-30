@@ -10,11 +10,21 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { Box, boxCollision, fallOff } from './resources/box.js';
 import * as UTILS from './resources/utils.js';
 
+// variables necessary for the render function
+let mirrorCamera;
+let renderer;
+let scene;
+let camera;
+let player;
+let ground;
+let spotLight;
+
 // taking canvas from index.html
 const canvas = document.getElementById("canvas");
 
+
 // scene
-const scene = new THREE.Scene();
+scene = new THREE.Scene();
 // instancing the skybox
 const loader = new THREE.CubeTextureLoader();
 scene.background = UTILS.loadSkybox(loader);
@@ -24,12 +34,12 @@ const fov = 75;
 const aspectRatio = window.innerWidth / window.innerHeight;
 const near = 0.1;
 const far = 100;
-const camera = new THREE.PerspectiveCamera(fov, aspectRatio, near, far);
+camera = new THREE.PerspectiveCamera(fov, aspectRatio, near, far);
 
 camera.position.set(4.6, 2.7, 8);
 
 // renderer
-const renderer = new THREE.WebGLRenderer({
+renderer = new THREE.WebGLRenderer({
     alpha: true,
     //antialias: true,
     canvas: canvas
@@ -45,9 +55,9 @@ const controls = new OrbitControls(camera, renderer.domElement);
 UTILS.addDatGui(canvas);
 
 // instancing ground floor
-const ground = new Box({
+ground = new Box({
     width: 10,
-    height: 0.5,
+    height: 0.01,
     depth: 35,
     color: 0x0369a1,
     position: {
@@ -60,7 +70,7 @@ ground.receiveShadow = true; // shadows can be casted
 scene.add(ground);
 
 // instancing player controlled cube
-const player = new Box({
+player = new Box({
     width: 1,
     height: 1,
     depth: 1,
@@ -88,8 +98,9 @@ scene.add(new THREE.AmbientLight(0xFFFFFF, 0.5));
 initKeyEvents();
 initTouchEvents(canvas);
 
+//=== dat.GUI controlled elements ===//
 // instancing spotlight to follow the player controlled mesh
-const spotLight = new THREE.SpotLight(0xffffff);
+spotLight = new THREE.SpotLight(0xffffff);
 spotLight.position.set(0, 10, 0);
 spotLight.castShadow = true;
 spotLight.intensity = 200;
@@ -97,6 +108,26 @@ spotLight.angle = Math.PI / 15;
 spotLight.distance = 1000;
 // setting the spotLight to follow the player controlled mesh
 spotLight.target = player;
+
+// mirror
+// cubeRenderTarget
+const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 512 ); // TODO: set this value editable at runtime
+cubeRenderTarget.texture.type = THREE.HalfFloatType;
+// mirror camera
+mirrorCamera = new THREE.CubeCamera( 0.01, 100, cubeRenderTarget );
+// material
+const mirrorMaterial = new THREE.MeshStandardMaterial({
+    //color: 0xFFFFFF,
+    envMap: cubeRenderTarget.texture,
+    roughness: 0.01,
+    metalness: 1
+});
+const mirror = new THREE.Mesh(new THREE.BoxGeometry(0.1, 4, 35), mirrorMaterial);
+mirrorCamera.position.set(-6, 0, -10);
+mirror.position.set(-6, 0, -10);
+//mirror.rotation.y = Math.PI / 2; // rotation about the y axis
+//mirrorCamera.position.copy(mirror.position);
+scene.add(mirror);
 
 // enemy instantation
 const enemies = []; // list of enemies
@@ -111,6 +142,13 @@ let spawnRate = 200;
 function render() {
     // setting an id to the frame to stop the game in case of collision with enemy
     const animationId = requestAnimationFrame(render);
+    
+    // reflection
+    //mirror.visible = false;
+    //mirrorCamera.position.copy(mirror.position);
+    mirrorCamera.update(renderer, scene);
+    //mirror.visible = true;
+
     // rendering scene
     renderer.render(scene, camera);
 
