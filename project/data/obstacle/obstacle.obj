@@ -1,6 +1,6 @@
-# Blender v3.0.1 OBJ File: 'untitled.blend'
+# Blender v3.0.1 OBJ File: 'obstacle.blend'
 # www.blender.org
-mtllib untitled.mtl
+mtllib obstacle.mtl
 o Cube_Cube.001
 v -0.500000 0.000000 0.500000
 v -0.500000 1.000000 0.500000
