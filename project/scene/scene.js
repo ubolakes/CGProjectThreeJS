@@ -100,8 +100,8 @@ export async function init( canvas ) {
     initKeyEvents();
     initTouchEvents(canvas);
 
-    //=== dat.GUI controlled elements ===//
-    // instancing spotlight to follow the player controlled mesh
+    // dat.GUI controlled elements
+    // spotlight to follow the player controlled mesh
     spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(0, 10, 0);
     spotLight.castShadow = true;
@@ -128,7 +128,6 @@ export async function init( canvas ) {
     mirror.position.set(-6, 0, -10);
     //mirror.rotation.y = Math.PI / 2; // rotation about the y axis
     //mirrorCamera.position.copy(mirror.position);
-    scene.add(mirror);
 }
 
 
@@ -174,9 +173,12 @@ export function render() {
 
     // checking every 10 frames to reduce overhead
     if (frames % 10 === 0) {
-        // checking if the spotlight needs to be used in the scene
+        // checking if the spotlight needs to be rendered in the scene
         if (UTILS.params.spotLightEnabled) scene.add(spotLight);
         else scene.remove(spotLight);
+        // checking if the mirror needs to be rendered in the scene
+        if (UTILS.params.mirrorEnabled) scene.add(mirror);
+        else scene.remove(mirror);
     }
 
     frames++; // increasing frames number

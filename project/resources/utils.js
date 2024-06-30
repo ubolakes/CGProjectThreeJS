@@ -43,11 +43,16 @@ export function loadSkybox( loader ) {
 
 // params for data.GUI
 export const params = {
-    spotLightEnabled: false
+    spotLightEnabled: false,
+    mirrorEnabled: false
 };
 
 function toggleSpotlight() {
     params.spotLightEnabled = !params.spotLightEnabled;
+}
+
+function toggleMirror() {
+    params.mirrorEnabled = !params.mirrorEnabled;
 }
 
 export function addDatGui( canvas ) {
@@ -55,5 +60,8 @@ export function addDatGui( canvas ) {
 
     gui.add(params, 'spotLightEnabled').name('Toggle spotlight').onChange((v) => {
         toggleSpotlight
+    });
+    gui.add(params, 'mirrorEnabled').name('Toggle mirror').onChange((v) => {
+        toggleMirror
     });
 }
