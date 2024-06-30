@@ -128,7 +128,7 @@ export async function init( canvas ) {
     scene2 = new THREE.Scene();
     //camera2 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 100);
     camera2 = new THREE.PerspectiveCamera(50, 1, 0.1, 100 );
-    camera2.position.z = 4;
+    camera2.position.z = 3;
     // shader material to reflect
     const material = new THREE.ShaderMaterial({
         uniforms: {
@@ -155,13 +155,13 @@ export async function init( canvas ) {
     });
     
     // geometry on which to stick the reflection
-    const reflection = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+    const reflection = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
     scene2.add(reflection);
 
     renderTarget = new THREE.WebGLRenderTarget(512, 512);
     // geometry with the reflection attached
     const mirrorMaterial = new THREE.MeshBasicMaterial({ map: renderTarget.texture});
-    mirror = new THREE.Mesh(new THREE.PlaneGeometry(7, 7), mirrorMaterial);
+    mirror = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), mirrorMaterial);
     // setting position
     mirror.position.set(-6, 1, -4);
     mirror.rotation.y = Math.PI / 2;
