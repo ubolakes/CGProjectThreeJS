@@ -5,6 +5,8 @@ Github: @ubolakes
 */
 
 import { Box } from './box.js'
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
 export function instanceEnemy() {
     const enemy = new Box({
@@ -12,6 +14,8 @@ export function instanceEnemy() {
         height: 1,
         depth: 1,
         color: 0xff0000,
+        transparent: true,
+        opacity: 0.0,
         velocity: {
             x: 0,
             y: 0,
@@ -25,8 +29,25 @@ export function instanceEnemy() {
         zAcceleration: true
     });
     enemy.castShadow = true;
-
+    loadMesh(enemy, './data/obstacle/obstacle.mtl', './data/obstacle/obstacle.obj' );
     return enemy;
+}
+
+function loadMesh(object, mtlPath, objPath) {
+    const objloader = new OBJLoader();
+    const mtlloader = new MTLLoader();
+
+    // loading materials
+    mtlloader.load( mtlPath, (materials) => {
+        materials.preload();
+
+        // loading geometry
+        objloader.setMaterials(materials);
+        objloader.load( objPath, (mesh) => {
+            mesh.position.y = -0.5;
+            object.add(mesh);
+        });
+    });
 }
 
 export function loadSkybox( loader ) {
