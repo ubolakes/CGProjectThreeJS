@@ -126,7 +126,9 @@ export async function init( canvas ) {
     mirrorCamera.rotation.y = Math.PI / 2;
 
     scene2 = new THREE.Scene();
-    camera2 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 100);
+    //camera2 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 100);
+    camera2 = new THREE.PerspectiveCamera(50, 1, 0.1, 100 );
+    camera2.position.z = 4;
     // shader material to reflect
     const material = new THREE.ShaderMaterial({
         uniforms: {
