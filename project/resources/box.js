@@ -12,6 +12,8 @@ export class Box extends THREE.Mesh {
         height,
         depth,
         color = 0x00FF00, // default color
+        transparent = false,
+        opacity = 1,
         velocity = { // default values
             x: 0,
             y: 0,
@@ -27,7 +29,7 @@ export class Box extends THREE.Mesh {
         // calling constructor of extended class
         super(
             new THREE.BoxGeometry(width, height, depth),
-            new THREE.MeshPhongMaterial({color})
+            new THREE.MeshPhongMaterial({ color, transparent, opacity})
         );
 
         // setting properties
