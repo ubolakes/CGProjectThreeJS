@@ -114,7 +114,7 @@ export async function init( canvas ) {
     spotLight.target = player;
 
     // mirror
-    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 128, { //TODO: make value settable by user
+    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256, {
         format: THREE.RGBFormat,
         generateMipmaps: true,
         minFilter: THREE.LinearMipmapLinearFilter,
