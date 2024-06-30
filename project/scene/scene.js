@@ -7,7 +7,7 @@ Github: @ubolakes
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 // importing home made libraries
-import { Box, boxCollision, fallOff } from '../resources/box.js';
+import * as BOX from '../resources/box.js';
 import * as UTILS from '../resources/utils.js';
 
 // variables 
@@ -60,7 +60,7 @@ export async function init( canvas ) {
     UTILS.addDatGui(canvas);
 
     // instancing ground floor
-    ground = new Box({
+    ground = new BOX.Box({
         width: 10,
         height: 0.01,
         depth: 35,
@@ -75,7 +75,7 @@ export async function init( canvas ) {
     scene.add(ground);
 
     // instancing player controlled cube
-    player = new Box({
+    player = new BOX.Box({
         width: 1,
         height: 1,
         depth: 1,
@@ -194,8 +194,8 @@ export function render() {
     enemies.forEach(enemy => {
         enemy.update(ground);
         // collision with player
-        if (boxCollision({ box0: player, box1: enemy }) || 
-            fallOff({ box0: player, box1: ground})) {
+        if (BOX.boxCollision({ box0: player, box1: enemy }) || 
+            BOX.fallOff({ box0: player, box1: ground})) {
             cancelAnimationFrame(animationId);
         }
     });
