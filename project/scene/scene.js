@@ -10,14 +10,19 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { Box, boxCollision, fallOff } from '../resources/box.js';
 import * as UTILS from '../resources/utils.js';
 
-// variables necessary for the render function
-let mirrorCamera;
-let renderer;
-let scene;
-let camera;
-let player;
-let ground;
+// variables 
+// rendering
+let renderer, scene, camera;
+// mesh
+let player, ground;
+// reflection
+let mirrorCamera, mirror;
+// optional lights
 let spotLight;
+// enemies
+const enemies = []; // list of enemies
+let frames = 0; // number of frames, determines the number of enemies to spawn
+let spawnRate = 200; // period of enemy spawning
 
 // init function
 export async function init( canvas ) {
@@ -82,7 +87,6 @@ export async function init( canvas ) {
     player.castShadow = true; // enabling shadow casting 
     scene.add(player);
 
-
     // setting directional light
     const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
     directionalLight.position.set(-1, 4, 1);
@@ -115,30 +119,18 @@ export async function init( canvas ) {
     mirrorCamera = new THREE.CubeCamera( 0.01, 100, cubeRenderTarget );
     // material
     const mirrorMaterial = new THREE.MeshStandardMaterial({
-        //color: 0xFFFFFF,
         envMap: cubeRenderTarget.texture,
         roughness: 0.01,
         metalness: 1
     });
-    const mirror = new THREE.Mesh(new THREE.BoxGeometry(0.1, 4, 35), mirrorMaterial);
+    mirror = new THREE.Mesh(new THREE.BoxGeometry(0.1, 4, 35), mirrorMaterial);
     mirrorCamera.position.set(-6, 0, -10);
     mirror.position.set(-6, 0, -10);
     //mirror.rotation.y = Math.PI / 2; // rotation about the y axis
     //mirrorCamera.position.copy(mirror.position);
     scene.add(mirror);
-
-    // returning values for the main
-    return [mirrorCamera, renderer, scene, camera, player, ground, spotLight];
 }
 
-
-// enemy instantation
-const enemies = []; // list of enemies
-// keeping track of frames
-// it's used to determine the number of enemies to spawn
-let frames = 0;
-// period of enemy spawning
-let spawnRate = 200;
 
 // render function
 export function render() {
@@ -146,10 +138,7 @@ export function render() {
     const animationId = requestAnimationFrame(render);
     
     // reflection
-    //mirror.visible = false;
-    //mirrorCamera.position.copy(mirror.position);
     mirrorCamera.update(renderer, scene);
-    //mirror.visible = true;
 
     // rendering scene
     renderer.render(scene, camera);
@@ -159,12 +148,12 @@ export function render() {
     resetVelocity( player ); // resetting speed
     updateVelocity( player ); // updating speed
 
+    // player position management
     player.update( ground );
 
     // updating for each enemy
     enemies.forEach(enemy => {
         enemy.update(ground);
-
         // collision with player
         if (boxCollision({ box0: player, box1: enemy }) || 
             fallOff({ box0: player, box1: ground})) {
@@ -172,6 +161,7 @@ export function render() {
         }
     });
 
+    // changing the number of enemies spawned
     if (frames % spawnRate === 0){
         // decreasing the period length as it stays alive
         spawnRate = spawnRate > 10 ? spawnRate-10 : spawnRate;
@@ -182,7 +172,7 @@ export function render() {
         enemies.push(enemy); // adding to the list        
     }
 
-    // checking every 20 frames to reduce overhead
+    // checking every 10 frames to reduce overhead
     if (frames % 10 === 0) {
         // checking if the spotlight needs to be used in the scene
         if (UTILS.params.spotLightEnabled) scene.add(spotLight);
