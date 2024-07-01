@@ -19,8 +19,8 @@ let player, ground;
 let mirrorCamera, mirror;
 let renderTarget;
 let scene2, camera2;
-// optional lights
-let spotLight;
+// lights
+let directionalLight, spotLight;
 // enemies
 const enemies = []; // list of enemies
 let frames = 0; // number of frames, determines the number of enemies to spawn
@@ -68,10 +68,15 @@ export async function init( canvas ) {
     scene.add(player);
 
     // setting directional light
-    const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
-    directionalLight.position.set(-1, 4, 1);
+    directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+    directionalLight.position.set(-20, 100, 20);
     directionalLight.castShadow = true; // enabling shadow casting
+    directionalLight.target = player; // following the player to always have shadow
     scene.add(directionalLight);
+
+    // camera helper - debug use
+    //const helper = new THREE.CameraHelper (directionalLight.shadow.camera );
+    //scene.add( helper );
 
     // setting ambient light
     scene.add(new THREE.AmbientLight(0xFFFFFF, 1.5));
@@ -143,7 +148,6 @@ export async function init( canvas ) {
     // setting position
     mirror.position.set(-6, 1, -4);
     mirror.rotation.y = Math.PI / 2;
-
 }
 
 
