@@ -33,6 +33,39 @@ export function instanceObstacle() {
     return enemy;
 }
 
+export function instancePlayer() {
+    const player = new Box({
+        width: 1,
+        height: 1,
+        depth: 1,
+        velocity: {
+            x: 0,
+            y: -0.01, // moving downward
+            z: 0
+        }
+    });
+    player.castShadow = true;
+    // TODO: load associated mesh
+    return player;
+}
+
+export function instanceGround() {
+    const ground = new Box({
+        width: 10,
+        height: 0.01,
+        depth: 35,
+        color: 0x0369a1,
+        position: {
+            x: 0,
+            y: -2, // positioned under cube
+            z: -10
+        }
+    });
+    ground.receiveShadow = true; // shadows can be casted
+    return ground;
+}
+
+
 function loadMesh(object, mtlPath, objPath) {
     const objloader = new OBJLoader();
     const mtlloader = new MTLLoader();

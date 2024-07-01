@@ -60,33 +60,11 @@ export async function init( canvas ) {
     UTILS.addDatGui(canvas);
 
     // instancing ground floor
-    ground = new BOX.Box({
-        width: 10,
-        height: 0.01,
-        depth: 35,
-        color: 0x0369a1,
-        position: {
-            x: 0,
-            y: -2, // positioned under cube
-            z: -10
-        }
-    });
-    ground.receiveShadow = true; // shadows can be casted
+    ground = UTILS.instanceGround();
     scene.add(ground);
 
     // instancing player controlled cube
-    player = new BOX.Box({
-        width: 1,
-        height: 1,
-        depth: 1,
-        velocity: {
-            x: 0,
-            y: -0.01, // moving downward
-            z: 0
-        },
-        ground: ground
-    });
-    player.castShadow = true; // enabling shadow casting 
+    player = UTILS.instancePlayer();
     scene.add(player);
 
     // setting directional light
@@ -96,7 +74,7 @@ export async function init( canvas ) {
     scene.add(directionalLight);
 
     // setting ambient light
-    scene.add(new THREE.AmbientLight(0xFFFFFF, 0.5));
+    scene.add(new THREE.AmbientLight(0xFFFFFF, 1.5));
 
     // movement initialization
     initKeyEvents();
