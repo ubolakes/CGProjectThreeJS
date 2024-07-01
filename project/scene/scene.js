@@ -96,6 +96,10 @@ export async function init( canvas ) {
     // setting the spotLight to follow the player controlled mesh
     spotLight.target = player;
 
+    // camera helper - debug use
+    //const helper = new THREE.CameraHelper (spotLight.shadow.camera );
+    //scene.add( helper );
+
     // mirror
     const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256, {
         format: THREE.RGBFormat,
