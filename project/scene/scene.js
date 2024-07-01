@@ -175,6 +175,8 @@ export function render() {
         if (BOX.boxCollision({ box0: player, box1: enemy }) || 
             BOX.fallOff({ box0: player, box1: ground})) {
             cancelAnimationFrame(animationId);
+            // redirecting to death page
+            location.href = "death.html";
         }
     });
 
