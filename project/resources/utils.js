@@ -34,9 +34,9 @@ export function instanceObstacle() {
 
 export function instancePlayer() {
     const player = new Box({
-        width: 0.4,
+        width: 0.8,
         height: 1,
-        depth: 0.4,
+        depth: 0.8,
         transparent: true,
         opacity: 0.0,
         velocity: {
