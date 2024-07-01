@@ -45,7 +45,6 @@ export function instancePlayer() {
             z: 0
         }
     });
-    player.castShadow = true;
     loadMesh( player, './data/player/player.mtl', './data/player/player.obj' );
     return player;
 }
