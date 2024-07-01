@@ -5,7 +5,7 @@ Final project for "Fondamenti di Computer Graphics M" class.
 **1.** download the repo  
 **2.** open it in Visual Studio Code  
 **3.** install the "Live Server" extension by Ritwick Dey  
-**4.** open the HTML file and click "Go Live" button on the bottom right  
+**4.** open index.html and click "Go Live" button on the bottom right  
 
 ### Mandatory requests
 - [x] 3D geometry displayed in perspective projection
