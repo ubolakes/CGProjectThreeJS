@@ -28,7 +28,6 @@ export function instanceObstacle() {
         },
         zAcceleration: true
     });
-    enemy.castShadow = true;
     loadMesh( enemy, './data/obstacle/obstacle.mtl', './data/obstacle/obstacle.obj' );
     return enemy;
 }
@@ -80,7 +79,11 @@ function loadMesh(object, mtlPath, objPath) {
         objloader.setMaterials(materials);
         objloader.load( objPath, (mesh) => {
             mesh.position.y = -0.5;
-            mesh.castShadow = true;
+            // enabling shadow casting for each part of the mesh
+            mesh.traverse( function (node) {
+                if (node.isMesh)
+                    node.castShadow = true;
+            });
             object.add(mesh);
         });
     });
