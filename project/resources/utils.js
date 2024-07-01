@@ -29,15 +29,17 @@ export function instanceObstacle() {
         zAcceleration: true
     });
     enemy.castShadow = true;
-    loadMesh(enemy, './data/obstacle/obstacle.mtl', './data/obstacle/obstacle.obj' );
+    loadMesh( enemy, './data/obstacle/obstacle.mtl', './data/obstacle/obstacle.obj' );
     return enemy;
 }
 
 export function instancePlayer() {
     const player = new Box({
-        width: 1,
+        width: 0.4,
         height: 1,
-        depth: 1,
+        depth: 0.4,
+        transparent: true,
+        opacity: 0.0,
         velocity: {
             x: 0,
             y: -0.01, // moving downward
@@ -45,7 +47,7 @@ export function instancePlayer() {
         }
     });
     player.castShadow = true;
-    // TODO: load associated mesh
+    loadMesh( player, './data/player/player.mtl', './data/player/player.obj' );
     return player;
 }
 
@@ -78,6 +80,7 @@ function loadMesh(object, mtlPath, objPath) {
         objloader.setMaterials(materials);
         objloader.load( objPath, (mesh) => {
             mesh.position.y = -0.5;
+            mesh.castShadow = true;
             object.add(mesh);
         });
     });
