@@ -47,12 +47,11 @@ export async function init( canvas ) {
     renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: true,
-        canvas: canvas,
+        canvas: canvas, // using canvas to render
         //depth: true
     });
     renderer.shadowMap.enabled = true; // enabling shadows using shadow mapping
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement); // using the canvas to render
 
     // controls
     const controls = new OrbitControls(camera, renderer.domElement);
