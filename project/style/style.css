@@ -4,7 +4,7 @@ E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
 
-body {
+.body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,7 +12,12 @@ body {
     margin: 0;
 }
 
-div {
+.div {
     padding: 20px;
     text-align: center;
+}
+
+.title{
+    text-align: left;
+    font-weight: bold;
 }
