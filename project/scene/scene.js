@@ -99,7 +99,7 @@ export async function init( canvas ) {
     spotLight.target = player;
 
     // mirror
-    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 128, {
+    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256, {
         format: THREE.RGBFormat,
         generateMipmaps: true,
         minFilter: THREE.LinearMipmapLinearFilter,
@@ -135,8 +135,7 @@ export async function init( canvas ) {
                 vec3 color = textureCube(cubemap, direction).rgb;
                 gl_FragColor = vec4(color, 1.0);
             }
-        `,
-        side: THREE.DoubleSide
+        `
     });
     
     // geometry on which to stick the reflection
