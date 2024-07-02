@@ -27,9 +27,9 @@ let directionalLight, spotLight;
 var enemies = []; // list of enemies
 let frames = 0; // number of frames, determines the number of enemies to spawn
 let spawnRate = 200; // period of enemy spawning
-// points
-let points = 0;
-let pointsDiv;
+// score
+let score = 0;
+let scoreDiv;
 
 // init function
 export async function init( canvas ) {
@@ -150,8 +150,8 @@ export async function init( canvas ) {
     mirror.position.set(-6, 1, -4);
     mirror.rotation.y = Math.PI / 2;
 
-    // output points
-    pointsDiv = document.getElementById('points');
+    // output score
+    scoreDiv = document.getElementById('score');
 }
 
 // performance monitoring
@@ -183,6 +183,8 @@ export function animate() {
         if (BOX.boxCollision({ box0: player, box1: enemy }) ||  // collision with player
             BOX.fallOff({ box0: player, box1: ground})) {       // player falls off the platform
             cancelAnimationFrame(animationId);
+            // communicating final score
+            alert("Your final score is: " + score);
             // redirecting to death page
             location.href = "../death.html";
         }
@@ -212,8 +214,8 @@ export function animate() {
         if (frames > 1500) {
             enemies.shift();
         }
-        //increasing points
-        pointsDiv.innerText = ++points;
+        //increasing score
+        scoreDiv.innerText = ++score;
     }
 
     // checking if mirror enabled
