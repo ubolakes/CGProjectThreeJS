@@ -168,8 +168,7 @@ export function render() {
     // rendering scene
     renderer.render(scene, camera);
 
-    // movement management
-    // called at each frame
+    // movement management - called at each frame
     resetVelocity( player ); // resetting speed
     updateVelocity( player ); // updating speed
 
@@ -209,5 +208,12 @@ export function render() {
         else scene.remove(mirror);
     }
 
+    // checking if mirror needs to be moved according to player z
+    if (UTILS.params.mirrorFollow && UTILS.params.mirrorEnabled) {
+        // updating mirror z to always reflect the player
+        mirrorCamera.position.z = player.position.z;
+        mirror.position.z = player.position.z;
+    }
+    
     frames++; // increasing frames number
 }

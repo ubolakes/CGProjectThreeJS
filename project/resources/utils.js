@@ -103,7 +103,8 @@ export function loadSkybox( loader ) {
 // params for data.GUI
 export const params = {
     spotLightEnabled: false,
-    mirrorEnabled: false
+    mirrorEnabled: false,
+    mirrorFollow: false,
 };
 
 function toggleSpotlight() {
@@ -114,6 +115,10 @@ function toggleMirror() {
     params.mirrorEnabled = !params.mirrorEnabled;
 }
 
+function toggleMirrorFollow() {
+    params.mirrorFollow = !params.mirrorFollow;
+}
+
 export function addDatGui( canvas ) {
     let gui = new dat.gui.GUI( {autoPlace: true});
 
@@ -122,5 +127,8 @@ export function addDatGui( canvas ) {
     });
     gui.add(params, 'mirrorEnabled').name('Toggle mirror').onChange((v) => {
         toggleMirror
+    });
+    gui.add(params, 'mirrorFollow').name('Toggle follow').onChange((v) => {
+        toggleMirrorFollow
     });
 }
