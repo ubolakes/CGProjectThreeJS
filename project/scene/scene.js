@@ -47,7 +47,8 @@ export async function init( canvas ) {
     renderer = new THREE.WebGLRenderer({
         alpha: true,
         //antialias: true,
-        canvas: canvas
+        canvas: canvas,
+        //depth: true
     });
     renderer.shadowMap.enabled = true; // enabling shadows using shadow mapping
     renderer.setSize(window.innerWidth, window.innerHeight);
