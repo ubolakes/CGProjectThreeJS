@@ -126,7 +126,7 @@ function toggleMirrorFollow() {
 }
 
 export function addDatGui( canvas ) {
-    let gui = new dat.gui.GUI( {autoPlace: true});
+    let gui = new dat.gui.GUI( {autoPlace: false});
 
     gui.add(params, 'spotLightEnabled').name('Toggle spotlight').onChange((v) => {
         toggleSpotlight
@@ -137,4 +137,7 @@ export function addDatGui( canvas ) {
     gui.add(params, 'mirrorFollow').name('Toggle follow').onChange((v) => {
         toggleMirrorFollow
     });
+
+    // adding dat.GUI to the HTML
+    document.getElementById("gui").append(gui.domElement);
 }
