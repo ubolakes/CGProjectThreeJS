@@ -63,7 +63,7 @@ export function instanceGround() {
             z: -10
         }
     });
-    ground.receiveShadow = true; // shadows can be casted
+    //ground.receiveShadow = true; // shadows can be casted
     loadMesh( ground, '../data/ground/ground.mtl', '../data/ground/ground.obj' );
     return ground;
 }
@@ -83,9 +83,11 @@ function loadMesh(object, mtlPath, objPath) {
             mesh.position.y = -0.5;
             // enabling shadow casting for each part of the mesh
             mesh.traverse( function (node) {
-                if (node.isMesh)
+                if (node.isMesh) // all mesh
                     node.castShadow = true;
+                if (objPath.includes("ground")) // ground mesh only
                     node.receiveShadow = true;
+
             });
             object.add(mesh);
         });
