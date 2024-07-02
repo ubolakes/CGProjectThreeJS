@@ -41,7 +41,7 @@ export async function init( canvas ) {
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspectRatio, near, far);
 
-    camera.position.set(4.6, 2.7, 8);
+    camera.position.set(2, 2.7, 8);
 
     // renderer
     renderer = new THREE.WebGLRenderer({
