@@ -10,6 +10,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import * as BOX from '../resources/box.js';
 import * as UTILS from '../resources/utils.js';
 
+import Stats from 'three/addons/libs/stats.module.js'
+
 // variables 
 // rendering
 let renderer, scene, camera;
@@ -51,6 +53,7 @@ export async function init( canvas ) {
         //depth: true
     });
     renderer.shadowMap.enabled = true; // enabling shadows using shadow mapping
+    renderer.setPixelRatio( window.devicePixelRatio * 0.7);
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
     // controls - used for debugging
@@ -154,12 +157,19 @@ export async function init( canvas ) {
     mirror.rotation.y = Math.PI / 2;
 }
 
+// performance monitoring
+const stats = new Stats();
+document.body.appendChild(stats.dom);
+
 
 // render function
 export function render() {
     // setting an id to the frame to stop the game in case of collision with enemy
     const animationId = requestAnimationFrame(render);
     
+    // performance monitoring
+    stats.update();
+
     // reflection
     mirrorCamera.update(renderer, scene);
     renderer.setRenderTarget(renderTarget);
