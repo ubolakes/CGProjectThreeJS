@@ -13,6 +13,9 @@
         <meta http-equiv="Cache-Control" content="no-cache">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="../style/style.css">
+
         <!-- importing Three.js library-->
         <script type="importmap">
             {
@@ -33,7 +36,21 @@
         <script type="module" src="main.js"></script>
     </head>
 
-    <body>
-       <canvas id="canvas" height="500" width="750"></canvas>
+    <body class="body">
+        <div class="column1">
+            <canvas class="canvas" id="canvas" height="1000px" width="1000px"></canvas>
+        </div>
+
+        <div class="div column2">
+                <summary class="title">
+                    Keyboard inputs
+                    <p style="text-align: left">
+                        <b>W/S</b>: forward/backward <br>
+                        <b>A/D</b>: left/right <br>
+                        <b>Spacebar</b>: jump <br>
+                    </p>
+                </summary>
+            <div id="gui"></div>
+        </div>
     </body>
 </html>
