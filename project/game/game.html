@@ -21,7 +21,8 @@
             {
                 "imports": {
                     "three": "https://cdn.jsdelivr.net/npm/three@v0.162.0/build/three.module.js",
-                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.162.0/examples/jsm/"
+                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.162.0/examples/jsm/",
+                    "stats": "https://cdnjs.cloudflare.com/ajax/libs/stats.js/r17/Stats.min.js"
                 }
             }
         </script>
@@ -41,7 +42,12 @@
             <canvas class="canvas" id="canvas" height="1000px" width="1000px"></canvas>
         </div>
 
-        <div class="div column2">
+        <div class="column2">
+            <div class="div">
+                Score: <div class="title" style="text-align: center;" id="points"></div>
+            </div>
+
+            <div class="div">
                 <summary class="title">
                     Keyboard inputs
                     <p style="text-align: left">
@@ -50,7 +56,8 @@
                         <b>Spacebar</b>: jump <br>
                     </p>
                 </summary>
-            <div id="gui"></div>
+                <div id="gui"></div>
+            </div>
         </div>
     </body>
 </html>

@@ -28,7 +28,8 @@ var enemies = []; // list of enemies
 let frames = 0; // number of frames, determines the number of enemies to spawn
 let spawnRate = 200; // period of enemy spawning
 // points
-export let points = 0;
+let points = 0;
+let pointsDiv;
 
 // init function
 export async function init( canvas ) {
@@ -149,6 +150,9 @@ export async function init( canvas ) {
     // setting position
     mirror.position.set(-6, 1, -4);
     mirror.rotation.y = Math.PI / 2;
+
+    // output points
+    pointsDiv = document.getElementById('points');
 }
 
 // performance monitoring
@@ -210,7 +214,7 @@ export function animate() {
             enemies.shift();
         }
         //increasing points
-        points += 1;
+        pointsDiv.innerText = ++points;
     }
 
     // checking if mirror enabled
