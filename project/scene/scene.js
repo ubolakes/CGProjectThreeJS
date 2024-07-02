@@ -53,8 +53,8 @@ export async function init( canvas ) {
     renderer.shadowMap.enabled = true; // enabling shadows using shadow mapping
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-    // controls
-    const controls = new OrbitControls(camera, renderer.domElement);
+    // controls - used for debugging
+    //const controls = new OrbitControls(camera, renderer.domElement);
 
     // dat.GUI
     UTILS.addDatGui(canvas);
