@@ -36,7 +36,7 @@ export async function init( canvas ) {
 
     // camera
     const fov = 75;
-    const aspectRatio = window.innerWidth / window.innerHeight;
+    const aspectRatio = canvas.clientWidth / canvas.clientHeight;
     const near = 0.1;
     const far = 100;
     camera = new THREE.PerspectiveCamera(fov, aspectRatio, near, far);
@@ -51,7 +51,7 @@ export async function init( canvas ) {
         //depth: true
     });
     renderer.shadowMap.enabled = true; // enabling shadows using shadow mapping
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
     // controls
     const controls = new OrbitControls(camera, renderer.domElement);
