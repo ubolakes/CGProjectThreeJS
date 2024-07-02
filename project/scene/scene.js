@@ -24,9 +24,11 @@ let scene2, camera2;
 // lights
 let directionalLight, spotLight;
 // enemies
-const enemies = []; // list of enemies
+var enemies = []; // list of enemies
 let frames = 0; // number of frames, determines the number of enemies to spawn
 let spawnRate = 200; // period of enemy spawning
+// points
+export let points = 0;
 
 // init function
 export async function init( canvas ) {
@@ -48,7 +50,7 @@ export async function init( canvas ) {
     // renderer
     renderer = new THREE.WebGLRenderer({
         alpha: true,
-        antialias: true,
+        antialias: false,
         canvas: canvas, // using canvas to render
         //depth: true
     });
@@ -104,7 +106,7 @@ export async function init( canvas ) {
     //scene.add( helper );
 
     // mirror
-    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256, {
+    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 128, {
         format: THREE.RGBFormat,
         generateMipmaps: true,
         minFilter: THREE.LinearMipmapLinearFilter,
@@ -148,7 +150,7 @@ export async function init( canvas ) {
     const reflection = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
     scene2.add(reflection);
 
-    renderTarget = new THREE.WebGLRenderTarget(512, 512);
+    renderTarget = new THREE.WebGLRenderTarget(256, 256);
     // geometry with the reflection attached
     const mirrorMaterial = new THREE.MeshBasicMaterial({ map: renderTarget.texture});
     mirror = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), mirrorMaterial);
@@ -170,11 +172,6 @@ export function render() {
     // performance monitoring
     stats.update();
 
-    // reflection
-    mirrorCamera.update(renderer, scene);
-    renderer.setRenderTarget(renderTarget);
-    renderer.render(scene2, camera2);
-    renderer.setRenderTarget(null);
     // rendering scene
     renderer.render(scene, camera);
 
@@ -188,9 +185,8 @@ export function render() {
     // updating for each enemy
     enemies.forEach(enemy => {
         enemy.update(ground);
-        // collision with player
-        if (BOX.boxCollision({ box0: player, box1: enemy }) || 
-            BOX.fallOff({ box0: player, box1: ground})) {
+        if (BOX.boxCollision({ box0: player, box1: enemy }) ||  // collision with player
+            BOX.fallOff({ box0: player, box1: ground})) {       // player falls off the platform
             cancelAnimationFrame(animationId);
             // redirecting to death page
             location.href = "../death.html";
@@ -205,10 +201,12 @@ export function render() {
         // instancing a new enemy
         const enemy = UTILS.instanceObstacle();
         scene.add(enemy);
-        enemies.push(enemy); // adding to the list        
+        enemies.push(enemy); // adding to the list
+
+        console.log(enemies.length);
     }
 
-    // checking every 10 frames to reduce overhead
+        // checking every 10 frames to reduce overhead
     if (frames % 10 === 0) {
         // checking if the spotlight needs to be rendered in the scene
         if (UTILS.params.spotLightEnabled) scene.add(spotLight);
@@ -216,14 +214,30 @@ export function render() {
         // checking if the mirror needs to be rendered in the scene
         if (UTILS.params.mirrorEnabled) scene.add(mirror);
         else scene.remove(mirror);
+
+        if (frames > 2000) { // every 5 seconds
+            enemies.shift();
+        }
+
+        //increasing points
+        points += 1;
+    }
+    //console.log(points);
+
+    // checking if mirror enabled
+    if (UTILS.params.mirrorEnabled) {
+        mirrorCamera.update(renderer, scene);
+        renderer.setRenderTarget(renderTarget);
+        renderer.render(scene2, camera2);
+        renderer.setRenderTarget(null);
+
+        // checking if mirror needs to be moved according to player z
+        if (UTILS.params.mirrorFollow) {
+            // updating mirror z to always reflect the player
+            mirrorCamera.position.z = player.position.z;
+            mirror.position.z = player.position.z;
+        }
     }
 
-    // checking if mirror needs to be moved according to player z
-    if (UTILS.params.mirrorFollow && UTILS.params.mirrorEnabled) {
-        // updating mirror z to always reflect the player
-        mirrorCamera.position.z = player.position.z;
-        mirror.position.z = player.position.z;
-    }
-    
     frames++; // increasing frames number
 }
