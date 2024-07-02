@@ -80,7 +80,7 @@ export async function init( canvas ) {
     //scene.add( helper );
 
     // setting ambient light
-    scene.add(new THREE.AmbientLight(0xFFFFFF, 1.5));
+    scene.add(new THREE.AmbientLight(0xFFFFFF, 2.5));
 
     // movement initialization
     initKeyEvents();
