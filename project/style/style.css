@@ -5,19 +5,49 @@ Github: @ubolakes
 */
 
 .body {
+    font-family: "Lucida Console", "Courier New", monospace;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-color: #FFA500;
+    
 }
 
 .div {
-    padding: 20px;
     text-align: center;
+    background: #dddddd;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border:5px solid #cccccc;
+    outline: 1px solid #000000;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.30), 0 1px 1px rgba(0, 0, 0, .4);
+    padding: 10px;
 }
 
 .title{
     text-align: left;
     font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.btn {
+    padding: 4px 12px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    min-width: 88px;
+    border: none;
+    font: inherit;
+    color: #373030;
+    outline: none;
+    text-decoration: none;
+    cursor: default;
+    font-weight: 400;
+    background: #cbcbcb;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.30), 0 1px 1px rgba(0, 0, 0, .4);
 }
