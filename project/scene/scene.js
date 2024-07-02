@@ -79,10 +79,6 @@ export async function init( canvas ) {
     directionalLight.target = player; // following the player to always have shadow
     scene.add(directionalLight);
 
-    // camera helper - debug use
-    //const helper = new THREE.CameraHelper (directionalLight.shadow.camera );
-    //scene.add( helper );
-
     // setting ambient light
     scene.add(new THREE.AmbientLight(0xFFFFFF, 2.5));
 
@@ -100,10 +96,6 @@ export async function init( canvas ) {
     spotLight.distance = 1000;
     // setting the spotLight to follow the player controlled mesh
     spotLight.target = player;
-
-    // camera helper - debug use
-    //const helper = new THREE.CameraHelper (spotLight.shadow.camera );
-    //scene.add( helper );
 
     // mirror
     const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 128, {
@@ -165,9 +157,9 @@ document.body.appendChild(stats.dom);
 
 
 // render function
-export function render() {
+export function animate() {
     // setting an id to the frame to stop the game in case of collision with enemy
-    const animationId = requestAnimationFrame(render);
+    const animationId = requestAnimationFrame(animate);
     
     // performance monitoring
     stats.update();
@@ -202,8 +194,6 @@ export function render() {
         const enemy = UTILS.instanceObstacle();
         scene.add(enemy);
         enemies.push(enemy); // adding to the list
-
-        console.log(enemies.length);
     }
 
         // checking every 10 frames to reduce overhead
@@ -219,11 +209,9 @@ export function render() {
         if (frames > 1500) {
             enemies.shift();
         }
-
         //increasing points
         points += 1;
     }
-    //console.log(points);
 
     // checking if mirror enabled
     if (UTILS.params.mirrorEnabled) {

@@ -11,4 +11,4 @@ import * as SCENE from '../scene/scene.js';
 const canvas = document.getElementById("canvas");
 
 // making render wait until init is complete
-SCENE.init(canvas).then(SCENE.render);
+SCENE.init(canvas).then(SCENE.animate);
