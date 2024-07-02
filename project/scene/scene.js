@@ -215,7 +215,8 @@ export function render() {
         if (UTILS.params.mirrorEnabled) scene.add(mirror);
         else scene.remove(mirror);
 
-        if (frames > 2000) { // every 5 seconds
+        // removing enemy entities from the list
+        if (frames > 1500) {
             enemies.shift();
         }
 
