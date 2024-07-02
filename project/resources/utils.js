@@ -28,7 +28,7 @@ export function instanceObstacle() {
         },
         zAcceleration: true
     });
-    loadMesh( enemy, './data/obstacle/obstacle.mtl', './data/obstacle/obstacle.obj' );
+    loadMesh( enemy, '../data/obstacle/obstacle.mtl', '../data/obstacle/obstacle.obj' );
     return enemy;
 }
 
@@ -45,7 +45,7 @@ export function instancePlayer() {
             z: 0
         }
     });
-    loadMesh( player, './data/player/player.mtl', './data/player/player.obj' );
+    loadMesh( player, '../data/player/player.mtl', '../data/player/player.obj' );
     return player;
 }
 
@@ -90,12 +90,12 @@ function loadMesh(object, mtlPath, objPath) {
 
 export function loadSkybox( loader ) {
     const texture = loader.load([
-        './data/skybox/pos-x.jpg',
-        './data/skybox/neg-x.jpg',
-        './data/skybox/pos-y.jpg',
-        './data/skybox/neg-y.jpg',
-        './data/skybox/pos-z.jpg',
-        './data/skybox/neg-z.jpg'
+        '../data/skybox/pos-x.jpg',
+        '../data/skybox/neg-x.jpg',
+        '../data/skybox/pos-y.jpg',
+        '../data/skybox/neg-y.jpg',
+        '../data/skybox/pos-z.jpg',
+        '../data/skybox/neg-z.jpg'
     ]);
     return texture;
 }

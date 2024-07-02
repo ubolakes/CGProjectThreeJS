@@ -5,7 +5,7 @@ Github: @ubolakes
 */
 
 // importing home made libraries
-import * as SCENE from './scene/scene.js';
+import * as SCENE from '../scene/scene.js';
 
 // taking canvas from index.html
 const canvas = document.getElementById("canvas");

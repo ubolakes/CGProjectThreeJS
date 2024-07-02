@@ -184,7 +184,7 @@ export function render() {
             BOX.fallOff({ box0: player, box1: ground})) {
             cancelAnimationFrame(animationId);
             // redirecting to death page
-            location.href = "death.html";
+            location.href = "../death.html";
         }
     });
 
