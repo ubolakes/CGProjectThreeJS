@@ -46,7 +46,7 @@ export async function init( canvas ) {
     // renderer
     renderer = new THREE.WebGLRenderer({
         alpha: true,
-        //antialias: true,
+        antialias: true,
         canvas: canvas,
         //depth: true
     });

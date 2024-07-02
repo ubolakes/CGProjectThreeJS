@@ -55,6 +55,8 @@ export function instanceGround() {
         height: 0.01,
         depth: 35,
         color: 0x0369a1,
+        transparent: true,
+        opacity: 0.0,
         position: {
             x: 0,
             y: -2, // positioned under cube
@@ -62,6 +64,7 @@ export function instanceGround() {
         }
     });
     ground.receiveShadow = true; // shadows can be casted
+    loadMesh( ground, '../data/ground/ground.mtl', '../data/ground/ground.obj' );
     return ground;
 }
 
@@ -82,6 +85,7 @@ function loadMesh(object, mtlPath, objPath) {
             mesh.traverse( function (node) {
                 if (node.isMesh)
                     node.castShadow = true;
+                    node.receiveShadow = true;
             });
             object.add(mesh);
         });
