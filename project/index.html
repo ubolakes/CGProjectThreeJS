@@ -17,11 +17,11 @@
         <link rel="stylesheet" type="text/css" href="style/style.css">
     </head>
 
-    <body class="body">
+    <body class="body" class="index-background">
         <div class="div">
-            <h3>Welcome to Avoid the Umberto</h3>
+            <h3>Welcome to <i>Avoid the Umberto</i></h3>
             <div>
-                <button id="toGameButton">Click here to start playing</button>
+                <button class="btn" id="toGameButton" onmouseup="location.href = 'game.html'">Click here to start playing</button>
             </div>
         </div>
         <div class="div">
@@ -36,11 +36,5 @@
                 </p>
             </details>
         </div>
-
-        <script type="text/javascript">
-            document.getElementById("toGameButton").onclick = function () {
-                location.href = "game.html";
-            }        
-        </script>
     </body>
 </html>
