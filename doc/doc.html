@@ -1,0 +1,396 @@
+<!--
+    Author: Umberto Laghi
+    E-mail: umberto.laghi@studio.unibo.it
+    Github: @ubolakes
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="pandoc" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+        
+        <title>Documentation</title>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="./style/doc_style.css">
+    </head>
+
+    <body>
+        <header id="title-block-header">
+            <h1 class="title">Documentazione progetto di Fondamenti di Computer Graphics M</h1>
+            <p class="author">Umberto Laghi</p>
+            <p class="date">A.A. 2023-2024</p>
+        </header>
+        
+        <h1 id="indice">Indice</h1>
+        <ul>
+            <li><a href="#introduzione">Introduzione</a></li>
+            <li><a href="#box.js">Box</a></li>
+            <li><a href="#scene.js">Scene</a></li>
+            <li><a href="#rendering-avanzato">Tecnica avanzata di rendering</a></li>
+            <li><a href="utils.js">Utils</a></li>
+            <li><a href="#riferimenti">Riferimenti</a></li>
+        </ul>
+        <hr/>
+        
+        <h1 id="introduzione">Introduzione</h1>
+        <p> 
+            Il seguente progetto è stato realizzato come prova 
+            finale per il modulo 2 del corso di "Fondamenti di Computer 
+            Graphics M" tenuto dal professor Casciola.<br>
+            L'obiettivo è sviluppare un'applicazione web 
+            interattiva utilizzando la libreria Javascript three.js, 
+            che consente di realizzare scene più complesse scrivendo 
+            meno codice rispetto al "semplice" WebGL.
+        </p>
+
+        <p> 
+            L'applicazione risultante consiste di un semplice videogioco 3D 
+            in cui la mesh controllata dal giocatore deve evitare altre 
+            mesh ostacoli che si muovono verso di esso.<br>
+        </p>
+        <p>    
+            // da fare <br>
+            L'architettura del progetto consiste di due package:
+            <ul>
+                <li><strong>scene</strong>, che contiene:
+                    <ul>
+                        <li><strong>scene.js:</strong>
+                            è la classe più in alto nella gerarchia, rappresenta 
+                            la scena e si occupa di gestire tutte le altre.
+                        </li>
+                        <li><strong>camera.js:</strong>
+                            è la classe che descrive la camera e ne gestisce i 
+                            movimenti nell'ambiente 3D.
+                        </li>
+                        <li><strong>mesh_obj:</strong>
+                            è la classe che rappresenta una mesh da disegnare.
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>resources</strong>, che contiene le varie librerie 
+                    e funzioni di supporto utilizzate, tra cui:
+                    <ul>
+                        <li><strong>dat.gui.js</strong>: 
+                            utilizzata per gestire le impostazioni della scena
+                        </li>
+                        <li><strong>m4.js</strong>: 
+                            fornisce metodi utili per il calcolo matriciale
+                        </li>
+                        <li><strong>load_mesh.js</strong>: 
+                            contiene la funzione per leggere le mesh in formato 
+                            Wavefront OBJ e renderle utilizzabili da WebGL
+                        </li>
+                        <li><strong>webgl-utils.js</strong>:
+                            contiene funzioni wrapper per i metodi di WebGL
+                        </li>
+                        <li><strong>mouse_interaction.js</strong>:
+                            raccolta di funzioni per gestire gli eventi 
+                            prodotti da un mouse
+                        </li>
+                        <li><strong>touch_interaction.js</strong>:
+                            raccolta di funzioni per gestire gli eventi 
+                            generati da un dispositivo con schermo touch    
+                        </li>
+                        <li><strong>utils.js</strong>: 
+                            contiene funzioni di supporto
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>main.js:</strong>
+                    entry point del programma, invoca i metodi necessari 
+                    a renderizzare la scena e renderla interagibile con 
+                    l'utente.
+                </li>
+            </ul>
+        </p>
+        <p class="aligncenter">
+            <img src="resources/images/architecture.png" title="Architettura del progetto", height="600">
+        </p>
+
+        <h2 id="interfaccia">Interfaccia</h2>
+        <p><img src="./resources/images/interface.png" title="Interfaccia dell&#39;applicazione"/>
+            L'interfaccia dell'applicazione è molto semplice: 
+            da una parte c'è il canvas su cui viene renderizzata 
+            la scena e dall'altra una colonna contenente: il 
+            punteggio, i comandi e un'istanza di dat.GUI per 
+            attivare alcuni effetti.
+        </p>
+        <p>
+            Per gestire le diversi impostazioni è stata 
+            utilizzata la libreria 
+            <a href="https://github.com/dataarts/dat.gui">dat.GUI</a>.
+        </p>
+        <p>
+            La mesh del giocatore può essere controllata in due modi:
+            <ul>
+                <li>tramite <strong>tastiera</strong>, i cui tasti sono indicati a destra
+                    <p class="aligncenter">
+                        <img src="./resources/images/kb_movement.png"  title="Comandi da tastiera">
+                    </p>
+                </li>
+                <li>tramite <strong>touch</strong>, che richiede solo due dita
+                    <p class="aligncenter">
+                        <img src="./resources/gifs/touch_interaction.gif" title="Interazione con touch">
+                    </p>
+                </li>
+            </ul>
+        </p>
+       
+        <p>
+            Per l'interazione con dispositivi dotati di schermo touch gli input 
+            sono gestiti prima interpretandoli e poi convertendoli nei 
+            corrispettivi input da tastiera.
+        </p>
+        <p><a href="#indice">Torna all’indice</a></p>
+        
+        <hr/>
+
+        <h1 id="box.js">box.js</h1>
+        <p>
+            Estende la classe <code>THREE.Mesh</code> 
+            e rappresenta un basilare parallelepipedo, 
+            si occupa dell'istanziazione dello stesso 
+            e della gestione dei suoi parametri, in 
+            primis il movimento.<br>
+            Viene utilizzata anche come <strong>hitbox</strong> 
+            per le mesh caricate in formato Wavefront OBJ, 
+            rendendo il controllo delle collisioni meno 
+            esoso.
+        </p>
+        
+        <h2 id="metodi">Metodi</h2>
+        
+        <h3 id="constructor">constructor(...)</h3>
+        <p>
+            Il costruttore prende in input diversi dati:
+                <ul>
+                    <li>larghezza, altezza, profondità</li>
+                    <li>colore, di default <div style="color: #00FF00;">verde</div></li>
+                    <li>trasparenza e opacità</li>
+                    <li>velocità, lungo tutti e tre gli assi, di default 0</li>
+                    <li>posizione, di default nell'origine</li>
+                    <li>accelerazione lungo l'asse z</li>
+                </ul>
+            E invoca il costruttore della classe estesa che 
+            istanzia una <code>BoxGeometry</code> delle 
+            dimensioni date con <code>MeshPhongMaterial</code> 
+            del colore, trasparenza e opacità date.<br>
+            Inoltre, calcola le posizioni delle sei facce del 
+            poliedro, necessarie per il controllo della collisione.
+        </p>
+
+        <h3 id="updateSides">updateSides()</h3>
+        <p>
+            Ricalcola le posizioni delle facce.<br>
+            La posizione di una faccia viene calcolata come 
+            la posizione della mesh lungo un asse, a cui si 
+            somma (o sottrare) la dimensione lungo l'asse.
+            // inserire immagine che spiega
+            // magari fatta con draw.io
+        </p>
+
+        <h3 id="update">update( ground )</h3>
+        <p>
+            Invoca il metodo <code>updateSides</code> e 
+            aggiorna la posizione della mesh sommando a 
+            essa le componenti della velocità e 
+            dell'accelerazione.<br>
+            Inoltre, controlla se il giocatore può far 
+            saltare la mesh e applica la gravità.
+        </p>
+
+        <h3 id="applyGravity">applyGravity( ground )</h3>
+        <p>
+            Questo metodo incrementa la velocità della mesh 
+            lungo l'asse y di una costante <code>gravity</code>.<br>
+            Per aggiungere un po' di realismo è stato aggiunto 
+            un rimbalzo quando l'oggetto tocca terra, ciò è 
+            stato ottenuto decrementando la velocità sulla y 
+            quando c'è contatto tra la mesh e il terreno.
+        </p>
+        // inserire gif del rimbalzo
+
+        <hr/>
+
+        <h1 id="scene.js">scene.js</h1>
+        <p>
+            Raccoglie i metodi di inizializzazione e 
+            rendering della scena 3D.
+        </p>
+        
+        <h2 id="funzioni">Funzioni</h2>
+        
+        <h3 id="async-init">async init()</h3>
+        <p>
+            La funzione <code>init()</code> si occupa di 
+            istanziare tutto il necessario:
+            <ul>
+                <li><strong>scena</strong>, 
+                    con <code>THREE.Scene()</code></li>
+                <li><strong>skybox</strong>, 
+                    chiamando l'apposita funzione da utils.js </li>
+                <li><strong>camera</strong>, 
+                    con <code>THREE.PerspectiveCamera( )</code></li>
+                <li><strong>renderer</strong>, 
+                    con <code>THREE.WebGLRenderer( )</code> e 
+                    passando il <scene>canvas come destinazione dove disegnare 
+                    la scena renderizzata</li>
+                <li><strong>dat.GUI</strong>, 
+                    tramite la specifica funzione da utils.js</li>
+                <li><strong>mesh</strong>, 
+                    quella controllata dal giocatore e quella del pavimento</li>
+                <li><strong>luci</strong>, 
+                    sia la <code>DirectionalLight</code> che rappresenta 
+                    i raggi del sole, sia l'<code>AmbientLight</code> che descrivere 
+                    la luce minima ambientale, sia lo <code>SpotLight</code> che 
+                    rappresenta quello che nell'ambito dello spettacolo viene detto 
+                    "occhio di bue" o "seguipersone" </li>
+                <li>framework per la tecnica di <strong>rendering avanzata</strong>, 
+                    spiegato in dettaglio all'apposito capitolo
+                </li>
+            </ul>
+        </p>
+        
+        <h3 id="animate">animate()</h3>
+        <p>
+            Si occupa di gestire la scena frame per frame, 
+            aggiornando i parametri delle mesh del giocatore 
+            e degli ostacoli.<br>
+            In particolare:
+            <ul>
+                <li>
+                    gestisce gli input per il <strong>movimento</strong> del 
+                    giocatore
+                </li>
+                <li>
+                    <strong>aggiorna la posizione</strong> del giocatore e 
+                    degli ostacoli
+                </li>
+                <li>
+                    controlla che non ci siano <strong>collisioni</strong> tra 
+                    giocatore e ostacoli, e nel caso reindirizza 
+                    alla schermata di Game Over
+                </li>
+                <li>
+                    <strong>istanzia gli ostacoli</strong> con frequenza crescente 
+                    al proseguire della partita
+                </li>
+                <li>
+                    incrementa il <strong>punteggio</strong>
+                </li>
+                <li>
+                    controlla se le <strong>impostazioni di dat.GUI</strong> sono 
+                    state modificate e nel caso renderizza gli 
+                    effetti richiesti
+                </li>
+            </ul>
+        </p>
+
+        <p class="aligncenter">
+            <img src="./resources/images/transparency.png" title="Oggetto con trasparenza" height="500"/>
+        </p>
+
+        <h3 id="rendering-delle-ombre">Rendering delle ombre</h3>
+        <p>
+            Quello che con WebGL base richiedeva un po' più di 
+            complessità quanto a implementazione, con Three.js 
+            è estremamente semplificato, riducendosi alla modifica 
+            del parametro <code>castShadow</code> sia per le mesh 
+            che per le luci.<br>
+            Nel caso in cui una mesh debba "ricevere" l'ombra 
+            proiettata da un'altra mesh si deve modificare il 
+            parametro <code>receiveShadow</code>.<br>
+
+            // scrivere del fatto che per una mesh caricata vada fatto 
+            il check per ogni parte caricata della mesh
+
+        </p>
+        <p>
+            Abilitando i parametri di <code>castShadow</code> e 
+            <code>receiveShadow</code> su tutte le mesh presenti 
+            nella scena, il carico computazionale sulla GPU aumenta,
+            portando a un frame rate più basso.<br>
+            Un'ottimizzazione basilare è quella di ridurre il numero 
+            di mesh che ricevono l'ombra: così facendo si perde di 
+            realismo della scena ma si ottiene una fluidità 
+            maggiore, preferibile in un videogioco.
+        </p>
+
+        <p class="aligncenter">
+            <img src="./resources/images/shadow_rendering.png" title="Scena disegnata con le ombre" height="400" />
+        </p>
+        
+        <h3 id="instanceFunctions">instance functions</h3>
+        <p>
+            Questo gruppo di funzioni racchiude:
+            <ul>
+                <li><strong><code>instanceObstacle()</code></strong></li>
+                <li><strong><code>instancePlayer()</code></strong></li>
+                <li><strong><code>instanceGround()</code></strong></li>
+            </ul>
+            Il loro funzionamento è identico e prevede l'istanziazione 
+            di un oggetto <strong>Box</strong> a cui viene associata una 
+            mesh in formato Wavefront OBJ caricata dalla memoria.<br>
+            La relazione che lega la Box e la mesh è un rapporto 
+            madre-figlia: ciò è reso possibile dallo 
+            <strong>scene graph</strong>. In questo modo si possono 
+            modificare le proprietà della la madre e la figlia 
+            erediterà le modifiche.
+        </p>
+        // mettere immagine di uno scenegraph molto semplice
+
+        <h3 id="loadSkybox">loadSkybox()</h3>
+        <p>
+            Questa funzione si occupa di caricare lo skybox per la 
+            scena.<br>
+            Per fare ciò utilizza il metodo <code>load([...])</code> 
+            di <code>THREE.CubeTextureLoader()</code>, i cui parametri 
+            sono i percorsi delle sei facce del cubo.<br>
+            Il risultato viene poi passato a <code>scene.background</code> 
+            che lo applica alla cubemap.
+        </p>
+
+        <p><a href="#indice">Torna all’indice</a></p>
+        
+        <hr/>
+
+        <h1 id="rendering-avanzato">Tecnica avanzata di rendering</h1>
+        <p>
+            Dato che l'implementazione delle ombre è risultata molto semplice,
+            si è optato per l'aggiungere un'altra tecnica avanzata di 
+            rendering: la riflessione su di uno specchio.<br>
+            // spiegare come è stato fatto
+
+        </p>
+
+        <p><a href="#indice">Torna all’indice</a></p>
+
+        <hr/>
+
+        <h1 id="utils.js">utils.js</h1>
+        <p>
+        </p>
+
+        <p><a href="#indice">Torna all’indice</a></p>
+
+        <hr/>
+
+
+
+        <h1 id="riferimenti">Riferimenti</h1>
+        <p>
+            Per la realizzazione del progetto, oltre alle slide e al codice visto
+            durante il corso, è stato fatto riferimento ai seguenti articoli:
+            <ul>
+                <li>TODO</li>
+            </ul>
+        </p>
+
+        <p><a href="#indice">Torna all’indice</a></p>
+        <hr/>
+
+    </body>
+</html>
