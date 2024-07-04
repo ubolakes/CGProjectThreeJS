@@ -35,6 +35,28 @@ export function loadMesh(object, mtlPath, objPath) {
     });
 }
 
+// Box class support functions
+// determines if a Box collides with another
+export function boxCollision({ box0, box1 }) {
+    // checking if box0 is within the box1 boundaries
+    const xCollision = 
+        box0.right >= box1.left && box0.left <= box1.right;
+
+    const yCollision = 
+        box0.bottom + box0.velocity.y <= box1.top && box0.top >= box1.bottom;
+    
+    const zCollision = 
+        box0.front >= box1.back && box0.back <= box1.front;
+    
+    return xCollision && yCollision && zCollision;
+}
+
+// determines if the player has fallen of the ground
+export function fallOff({ box0, box1 }) {
+    // checking if box0 top is below box1 bottom
+    return box0.top < box1.bottom;
+}
+
 // params for data.GUI
 export const params = {
     spotLightEnabled: false,

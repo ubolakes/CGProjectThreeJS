@@ -180,8 +180,8 @@ export function animate() {
     // updating for each obstacle
     obstacles.forEach(obstacle => {
         obstacle.update(ground);
-        if (BOX.boxCollision({ box0: player, box1: obstacle }) ||  // collision with player
-            BOX.fallOff({ box0: player, box1: ground})) {       // player falls off the platform
+        if (UTILS.boxCollision({ box0: player, box1: obstacle }) ||  // collision with player
+            UTILS.fallOff({ box0: player, box1: ground})) {       // player falls off the platform
             cancelAnimationFrame(animationId);
             // communicating final score
             alert("Your final score is: " + score);

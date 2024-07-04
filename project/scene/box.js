@@ -6,7 +6,8 @@ Github: @ubolakes
 
 /* this class represents a 3D mesh */
 
-import * as THREE from 'three'
+import * as THREE from 'three';
+import * as UTILS from '../resources/utils.js'
 
 export class Box extends THREE.Mesh {
     // constructor
@@ -93,7 +94,7 @@ export class Box extends THREE.Mesh {
         this.velocity.y += this.gravity;
 
         // collision detection w/ground
-        if (boxCollision({ box0: this, box1: ground })) {
+        if (UTILS.boxCollision({ box0: this, box1: ground })) {
             const friction = 0.5;
             this.velocity.y *= friction;
             this.velocity.y = -this.velocity.y;
@@ -102,22 +103,3 @@ export class Box extends THREE.Mesh {
         }
     }
 } // Box class
-
-export function boxCollision({ box0, box1 }) {
-    // checking if box0 is within the box1 boundaries
-    const xCollision = 
-        box0.right >= box1.left && box0.left <= box1.right;
-
-    const yCollision = 
-        box0.bottom + box0.velocity.y <= box1.top && box0.top >= box1.bottom;
-    
-    const zCollision = 
-        box0.front >= box1.back && box0.back <= box1.front;
-    
-    return xCollision && yCollision && zCollision;
-}
-
-export function fallOff({ box0, box1 }) {
-    // checking if box0 top is below box1 bottom
-    return box0.top < box1.bottom;
-}
