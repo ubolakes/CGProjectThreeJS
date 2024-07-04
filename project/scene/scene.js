@@ -32,7 +32,10 @@ let score = 0;
 let scoreDiv;
 
 // init function
-export async function init( canvas ) {
+export async function init() {
+    // extracting canvas from html page
+    const canvas = document.getElementById("canvas");
+
     // scene
     scene = new THREE.Scene();
     // instancing the skybox
