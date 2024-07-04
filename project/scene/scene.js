@@ -38,9 +38,9 @@ export async function init() {
 
     // scene
     scene = new THREE.Scene();
-    // instancing the skybox
-    const loader = new THREE.CubeTextureLoader();
-    scene.background = UTILS.loadSkybox(loader);
+
+    // loading the skybox
+    scene.background = loadSkybox();
 
     // camera
     const fov = 75;
@@ -297,4 +297,16 @@ function instanceGround() {
     //ground.receiveShadow = true; // shadows can be casted
     UTILS.loadMesh( ground, '../data/ground/ground.mtl', '../data/ground/ground.obj' );
     return ground;
+}
+
+// function to load skybox
+function loadSkybox() {
+    return new THREE.CubeTextureLoader().load([
+        '../data/skybox/pos-x.jpg',
+        '../data/skybox/neg-x.jpg',
+        '../data/skybox/pos-y.jpg',
+        '../data/skybox/neg-y.jpg',
+        '../data/skybox/pos-z.jpg',
+        '../data/skybox/neg-z.jpg'
+    ]);
 }

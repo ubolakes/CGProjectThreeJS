@@ -33,18 +33,6 @@ export function loadMesh(object, mtlPath, objPath) {
     });
 }
 
-export function loadSkybox( loader ) {
-    const texture = loader.load([
-        '../data/skybox/pos-x.jpg',
-        '../data/skybox/neg-x.jpg',
-        '../data/skybox/pos-y.jpg',
-        '../data/skybox/neg-y.jpg',
-        '../data/skybox/pos-z.jpg',
-        '../data/skybox/neg-z.jpg'
-    ]);
-    return texture;
-}
-
 // params for data.GUI
 export const params = {
     spotLightEnabled: false,
