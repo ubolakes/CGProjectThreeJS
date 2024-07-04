@@ -4,6 +4,8 @@ E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
 
+/* this file contains functions used to handle touch events */
+
 // variables to store data
 var old_x, old_y;
 var dX, dY;

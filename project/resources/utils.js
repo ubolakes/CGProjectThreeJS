@@ -4,6 +4,8 @@ E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
 
+/* this file contains utility methods used by other functions */
+
 import { Box } from '../scene/box.js'
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';

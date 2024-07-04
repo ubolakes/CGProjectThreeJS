@@ -4,6 +4,8 @@ E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
 
+/* this file contains functions used to handle keyboard inputs */
+
 const velocity = 0.1;
 var keys = {}; // used to store and manage inputs
 

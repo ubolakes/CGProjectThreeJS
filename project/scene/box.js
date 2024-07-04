@@ -4,6 +4,8 @@ E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
 
+/* this class represents a 3D mesh */
+
 import * as THREE from 'three'
 
 export class Box extends THREE.Mesh {

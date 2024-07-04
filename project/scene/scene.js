@@ -4,6 +4,8 @@ E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
 
+/* this file contains functions to initialize the scene, render it */
+
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 // importing home made libraries
