@@ -23,10 +23,10 @@ let renderTarget;
 let scene2, camera2;
 // lights
 let directionalLight, spotLight;
-// enemies
-var enemies = []; // list of enemies
-let frames = 0; // number of frames, determines the number of enemies to spawn
-let spawnRate = 200; // period of enemy spawning
+// obstacles
+var obstacles = []; // list of obstacles
+let frames = 0; // number of frames
+let spawnRate = 200; // period of obstacle spawning
 // score
 let score = 0;
 let scoreDiv;
@@ -163,7 +163,7 @@ document.body.appendChild(stats.dom);
 
 // render function
 export function animate() {
-    // setting an id to the frame to stop the game in case of collision with enemy
+    // setting an id to the frame to stop the game in case of collision with obstacle
     const animationId = requestAnimationFrame(animate);
     
     // performance monitoring
@@ -179,10 +179,10 @@ export function animate() {
     // player position management
     player.update( ground );
 
-    // updating for each enemy
-    enemies.forEach(enemy => {
-        enemy.update(ground);
-        if (BOX.boxCollision({ box0: player, box1: enemy }) ||  // collision with player
+    // updating for each obstacle
+    obstacles.forEach(obstacle => {
+        obstacle.update(ground);
+        if (BOX.boxCollision({ box0: player, box1: obstacle }) ||  // collision with player
             BOX.fallOff({ box0: player, box1: ground})) {       // player falls off the platform
             cancelAnimationFrame(animationId);
             // communicating final score
@@ -192,15 +192,15 @@ export function animate() {
         }
     });
 
-    // changing the number of enemies spawned
+    // changing the number of obstacles spawned
     if (frames % spawnRate === 0){
         // decreasing the period length as it stays alive
         spawnRate = spawnRate > 10 ? spawnRate-10 : spawnRate;
 
-        // instancing a new enemy
-        const enemy = instanceObstacle();
-        scene.add(enemy);
-        enemies.push(enemy); // adding to the list
+        // instancing a new obstacle
+        let obstacle = instanceObstacle();
+        scene.add(obstacle);
+        obstacles.push(obstacle); // adding to the list
     }
 
         // checking every 10 frames to reduce overhead
@@ -212,9 +212,9 @@ export function animate() {
         if (UTILS.params.mirrorEnabled) scene.add(mirror);
         else scene.remove(mirror);
 
-        // removing enemy entities from the list
+        // removing obstacle entities from the list
         if (frames > 1500) {
-            enemies.shift();
+            obstacles.shift();
         }
         //increasing score
         scoreDiv.innerText = ++score;
@@ -240,7 +240,7 @@ export function animate() {
 
 // instancing functions
 function instanceObstacle() {
-    const enemy = new BOX.Box({
+    const obstacle = new BOX.Box({
         width: 1,
         height: 1,
         depth: 1,
@@ -259,8 +259,8 @@ function instanceObstacle() {
         },
         zAcceleration: true
     });
-    UTILS.loadMesh( enemy, '../data/obstacle/obstacle.mtl', '../data/obstacle/obstacle.obj' );
-    return enemy;
+    UTILS.loadMesh( obstacle, '../data/obstacle/obstacle.mtl', '../data/obstacle/obstacle.obj' );
+    return obstacle;
 }
 
 function instancePlayer() {
