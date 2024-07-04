@@ -7,6 +7,7 @@ Github: @ubolakes
 import * as THREE from 'three'
 
 export class Box extends THREE.Mesh {
+    // constructor
     constructor({
         width,
         height,
