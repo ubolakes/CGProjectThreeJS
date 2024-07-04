@@ -4,7 +4,7 @@ E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
 
-import { Box } from './box.js'
+import { Box } from '../scene/box.js'
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 

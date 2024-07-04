@@ -7,7 +7,7 @@ Github: @ubolakes
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 // importing home made libraries
-import * as BOX from '../resources/box.js';
+import * as BOX from './box.js';
 import * as UTILS from '../resources/utils.js';
 
 import Stats from 'three/addons/libs/stats.module.js'
