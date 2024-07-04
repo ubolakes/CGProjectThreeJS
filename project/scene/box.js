@@ -7,7 +7,7 @@ Github: @ubolakes
 /* this class represents a 3D mesh */
 
 import * as THREE from 'three';
-import * as UTILS from '../resources/utils.js'
+import * as UTILS from '../resources/utils.js';
 
 export class Box extends THREE.Mesh {
     // constructor
