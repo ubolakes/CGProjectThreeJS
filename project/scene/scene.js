@@ -88,10 +88,6 @@ export async function init() {
     // setting ambient light
     scene.add(new THREE.AmbientLight(0xFFFFFF, 2.5));
 
-    // movement initialization
-    initKeyEvents();
-    initTouchEvents(canvas);
-
     // dat.GUI controlled elements
     // spotlight to follow the player controlled mesh
     spotLight = new THREE.SpotLight(0xffffff);

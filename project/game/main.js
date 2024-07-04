@@ -9,5 +9,9 @@ Github: @ubolakes
 // importing home made libraries
 import * as SCENE from '../scene/scene.js';
 
+// movement binding
+initKeyEvents();
+initTouchEvents(document.getElementById("canvas"));
+
 // making render wait until init is complete
 SCENE.init().then(SCENE.animate);
