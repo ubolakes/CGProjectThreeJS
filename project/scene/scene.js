@@ -69,11 +69,11 @@ export async function init() {
     UTILS.addDatGui(canvas);
 
     // instancing ground floor
-    ground = UTILS.instanceGround();
+    ground = instanceGround();
     scene.add(ground);
 
     // instancing player controlled cube
-    player = UTILS.instancePlayer();
+    player = instancePlayer();
     scene.add(player);
 
     // setting directional light
@@ -161,7 +161,6 @@ export async function init() {
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
-
 // render function
 export function animate() {
     // setting an id to the frame to stop the game in case of collision with enemy
@@ -199,7 +198,7 @@ export function animate() {
         spawnRate = spawnRate > 10 ? spawnRate-10 : spawnRate;
 
         // instancing a new enemy
-        const enemy = UTILS.instanceObstacle();
+        const enemy = instanceObstacle();
         scene.add(enemy);
         enemies.push(enemy); // adding to the list
     }
@@ -237,4 +236,65 @@ export function animate() {
     }
 
     frames++; // increasing frames number
+}
+
+// instancing functions
+function instanceObstacle() {
+    const enemy = new BOX.Box({
+        width: 1,
+        height: 1,
+        depth: 1,
+        color: 0xff0000,
+        transparent: true,
+        opacity: 0.0,
+        velocity: {
+            x: 0,
+            y: 0,
+            z: 0.001
+        },
+        position: {
+            x: (Math.random() - 0.5) * 10,
+            y: 0,
+            z: -25,
+        },
+        zAcceleration: true
+    });
+    UTILS.loadMesh( enemy, '../data/obstacle/obstacle.mtl', '../data/obstacle/obstacle.obj' );
+    return enemy;
+}
+
+function instancePlayer() {
+    const player = new BOX.Box({
+        width: 0.4,
+        height: 1,
+        depth: 0.4,
+        transparent: true,
+        opacity: 0.0,
+        velocity: {
+            x: 0,
+            y: -0.01, // moving downward
+            z: 0
+        }
+    });
+    UTILS.loadMesh( player, '../data/player/player.mtl', '../data/player/player.obj' );
+    return player;
+}
+
+function instanceGround() {
+    const ground = new BOX.Box({
+        width: 10,
+        height: 0.01,
+        depth: 35,
+        color: 0x0369a1,
+        transparent: true,
+        opacity: 0.0,
+        position: {
+            x: 0,
+            y: -2, // positioned under cube
+            z: -10
+        }
+    });
+    //ground.receiveShadow = true; // shadows can be casted
+    UTILS.loadMesh( ground, '../data/ground/ground.mtl', '../data/ground/ground.obj' );
+    return ground;
 }
