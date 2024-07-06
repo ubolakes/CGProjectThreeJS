@@ -32,6 +32,10 @@ let spawnRate = 200; // period of obstacle spawning
 // score
 let score = 0;
 let scoreDiv;
+// framerate lock
+let previousTime = 0;
+const fps = 60;
+const interval = 1000 / fps;
 
 // init function
 export async function init() {
@@ -160,80 +164,86 @@ const stats = new Stats();
 document.body.appendChild(stats.dom);
 
 // render function
-export function animate() {
+export function animate(currentTime) {
     // setting an id to the frame to stop the game in case of collision with obstacle
     const animationId = requestAnimationFrame(animate);
     
-    // performance monitoring
-    stats.update();
+    const delta = currentTime - previousTime;
 
-    // rendering scene
-    renderer.render(scene, camera);
+    if (delta >= interval) {
+        previousTime = currentTime - (delta % interval);
 
-    // movement management - called at each frame
-    resetVelocity( player ); // resetting speed
-    updateVelocity( player ); // updating speed
+        // performance monitoring
+        stats.update();
 
-    // player position management
-    player.update( ground );
+        // rendering scene
+        renderer.render(scene, camera);
 
-    // updating for each obstacle
-    obstacles.forEach(obstacle => {
-        obstacle.update(ground);
-        if (UTILS.boxCollision({ box0: player, box1: obstacle }) ||  // collision with player
-            UTILS.fallOff({ box0: player, box1: ground})) {       // player falls off the platform
-            cancelAnimationFrame(animationId);
-            // communicating final score
-            alert("Your final score is: " + score);
-            // redirecting to death page
-            location.href = "../death.html";
+        // movement management - called at each frame
+        resetVelocity( player ); // resetting speed
+        updateVelocity( player ); // updating speed
+
+        // player position management
+        player.update( ground );
+
+        // updating for each obstacle
+        obstacles.forEach(obstacle => {
+            obstacle.update(ground);
+            if (UTILS.boxCollision({ box0: player, box1: obstacle }) ||  // collision with player
+                UTILS.fallOff({ box0: player, box1: ground})) {       // player falls off the platform
+                cancelAnimationFrame(animationId);
+                // communicating final score
+                alert("Your final score is: " + score);
+                // redirecting to death page
+                location.href = "../death.html";
+            }
+        });
+
+        // changing the number of obstacles spawned
+        if (frames % spawnRate === 0){
+            // decreasing the period length as it stays alive
+            spawnRate = spawnRate > 10 ? spawnRate-10 : spawnRate;
+
+            // instancing a new obstacle
+            let obstacle = instanceObstacle();
+            scene.add(obstacle);
+            obstacles.push(obstacle); // adding to the list
         }
-    });
 
-    // changing the number of obstacles spawned
-    if (frames % spawnRate === 0){
-        // decreasing the period length as it stays alive
-        spawnRate = spawnRate > 10 ? spawnRate-10 : spawnRate;
+            // checking every 10 frames to reduce overhead
+        if (frames % 10 === 0) {
+            // checking if the spotlight needs to be rendered in the scene
+            if (UTILS.params.spotLightEnabled) scene.add(spotLight);
+            else scene.remove(spotLight);
+            // checking if the mirror needs to be rendered in the scene
+            if (UTILS.params.mirrorEnabled) scene.add(mirror);
+            else scene.remove(mirror);
 
-        // instancing a new obstacle
-        let obstacle = instanceObstacle();
-        scene.add(obstacle);
-        obstacles.push(obstacle); // adding to the list
-    }
-
-        // checking every 10 frames to reduce overhead
-    if (frames % 10 === 0) {
-        // checking if the spotlight needs to be rendered in the scene
-        if (UTILS.params.spotLightEnabled) scene.add(spotLight);
-        else scene.remove(spotLight);
-        // checking if the mirror needs to be rendered in the scene
-        if (UTILS.params.mirrorEnabled) scene.add(mirror);
-        else scene.remove(mirror);
-
-        // removing obstacle entities from the list
-        if (frames > 1500) {
-            obstacles.shift();
+            // removing obstacle entities from the list
+            if (frames > 1500) {
+                obstacles.shift();
+            }
+            //increasing score
+            scoreDiv.innerText = ++score;
         }
-        //increasing score
-        scoreDiv.innerText = ++score;
-    }
 
-    // checking if mirror enabled
-    if (UTILS.params.mirrorEnabled) {
-        mirrorCamera.update(renderer, scene);
-        renderer.setRenderTarget(renderTarget);
-        renderer.render(scene2, camera2);
-        renderer.setRenderTarget(null);
+        // checking if mirror enabled
+        if (UTILS.params.mirrorEnabled) {
+            mirrorCamera.update(renderer, scene);
+            renderer.setRenderTarget(renderTarget);
+            renderer.render(scene2, camera2);
+            renderer.setRenderTarget(null);
 
-        // checking if mirror needs to be moved according to player z
-        if (UTILS.params.mirrorFollow) {
-            // updating mirror z to always reflect the player
-            mirrorCamera.position.z = player.position.z;
-            mirror.position.z = player.position.z;
+            // checking if mirror needs to be moved according to player z
+            if (UTILS.params.mirrorFollow) {
+                // updating mirror z to always reflect the player
+                mirrorCamera.position.z = player.position.z;
+                mirror.position.z = player.position.z;
+            }
         }
-    }
 
-    frames++; // increasing frames number
+        frames++; // increasing frames number
+    }
 }
 
 // instancing functions
