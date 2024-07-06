@@ -253,7 +253,7 @@ function instanceObstacle() {
         position: {
             x: (Math.random() - 0.5) * 10,
             y: 0,
-            z: -25,
+            z: -28,
         },
         zAcceleration: true
     });
