@@ -30,7 +30,7 @@
             <li><a href="#box.js">Box</a></li>
             <li><a href="#scene.js">Scene</a></li>
             <li><a href="#rendering-avanzato">Tecnica avanzata di rendering</a></li>
-            <li><a href="utils.js">Utils</a></li>
+            <li><a href="#utils.js">Utils</a></li>
             <li><a href="#riferimenti">Riferimenti</a></li>
         </ul>
         <hr/>
@@ -372,13 +372,50 @@
 
         <h1 id="utils.js">utils.js</h1>
         <p>
+            Questa libreria contiene funzioni usate dagli altri 
+            moduli o file, allo scopo di avere un codice più 
+            pulito e ordinato.
+        </p>
+        <h2 id="funzioni">Funzioni</h2>
+
+        <h3 id="loadMesh">loadMesh( object, mtlPath, objPath )</h3>
+        <p>
+            Questo metodo istanzia gli oggetti <strong>MTLLoader</strong> 
+            e <strong>OBJLoader</strong> che si occupano rispettivamente 
+            di caricare materiali e geometria della mesh.<br>
+            Una volta che la mesh texturata è stata caricata viene 
+            aggiunta all'oggetto passato, diventandone una foglia nello 
+            scenegraph.<br>
+            Nel caso in cui una mesh venga caricata è necessario 
+            abilitare la proiezione delle ombre per ogni sua parte e 
+            ciò viene fatto iterando con il meotodo 
+            <code>traverse(...)</code> della mesh caricata.
+        </p>
+
+        <h3 id="boxCollision">boxCollision({ box0, box1 })</h3>
+        <p>
+            Questa funzione si occupa di determinare se ci sono 
+            delle collisioni tra i due oggetti Box passati.<br>
+            Si considerano tutti e tre gli assi e per ognuno si 
+            valuta se le facce si intersecano considerando le 
+            loro posizioni.<br>
+            Questo metodo viene chiamato ogni qualvolta viene 
+            disegnato un frame.
+        </p>
+
+        <h3 id="fallOff">fallOff({ box0, box1 })</h3>
+        <p>
+            Questa funzione si occupa di determinare se l'oggetto 
+            box0 ha la sua faccia superiore al di sotto di quella 
+            inferiore dell'oggetto box1.<br>
+            Lo scopo di questa funzione è di determinare se la 
+            mesh controllata dal giocatore è caduta fuori dalla 
+            base e nel caso causare il game over.
         </p>
 
         <p><a href="#indice">Torna all’indice</a></p>
 
         <hr/>
-
-
 
         <h1 id="riferimenti">Riferimenti</h1>
         <p>
