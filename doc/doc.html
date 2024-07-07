@@ -349,11 +349,40 @@
             rendering: la riflessione su di uno specchio.<br>
             L'idea di base è quella di prendere la scena catturata da un certo 
             punto di vista e proiettarla su una superficie.<br>
-            
             <p class="aligncenter">
                 <img src="./resources/images/mirror.png" title="Tecnica avanzata di rendering" height="400px">
             </p>
-            // spiegare come è stato fatto
+            L'implementazione di questa tecnica richiede più passi:
+            <ul>
+                <li>
+                    creazione di un oggetto <strong>WebGLCubeRenderTarget</strong>, 
+                    che serve a rendere la scene come una texture cubica
+                </li>
+                <li>
+                    istanziazione di una <strong>CubeCamera</strong>, il cui scopo 
+                    è catturare la scena in sei direzioni, ovvero le facce di un cubo
+                </li>
+                <li>
+                    generazione di una <strong>seconda scena</strong> e una 
+                    <strong>seconda camera</strong>, l'obiettivo è renderizzare 
+                    usando lo shader di riflessione
+                </li>
+                <li>
+                    creazione di uno <strong>ShaderMaterial</strong> allo scopo di gestire 
+                    la riflessione utilizzando degli shader personalizzati
+                </li>
+                <li>
+                    istanziazione di una geometria su cui applicare la riflessione
+                </li>
+                <li>
+                    generazione di un <strong>WebGLRenderTarget</strong> per renderizzare 
+                    la scena
+                </li>
+                <li>
+                    applicazione del materiale "dinamico" alla superficie piana
+                </li>
+                
+            </ul>
         </p>
 
         <p><a href="#indice">Torna all’indice</a></p>
