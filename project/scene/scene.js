@@ -111,7 +111,7 @@ export async function init() {
         encoding: THREE.sRGBEncoding
     });
     // camera to capture what happens along vertices
-    mirrorCamera = new THREE.CubeCamera(1, 100000, cubeRenderTarget);
+    mirrorCamera = new THREE.CubeCamera(0.01, 100000, cubeRenderTarget);
     mirrorCamera.position.set(-6, 1, -4);
     mirrorCamera.rotation.y = Math.PI / 2;
 
