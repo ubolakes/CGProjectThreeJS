@@ -7,12 +7,8 @@ Github: @ubolakes
 /* this file contains functions to initialize the scene, render it */
 
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-// importing home made libraries
 import * as BOX from './box.js';
 import * as UTILS from '../resources/utils.js';
-
-import Stats from 'three/addons/libs/stats.module.js'
 
 // variables 
 // rendering
@@ -67,9 +63,6 @@ export async function init() {
     renderer.shadowMap.enabled = true; // enabling shadows using shadow mapping
     renderer.setPixelRatio( window.devicePixelRatio * 0.7);
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-
-    // controls - used for debugging
-    //const controls = new OrbitControls(camera, renderer.domElement);
 
     // dat.GUI
     UTILS.addDatGui(canvas);
@@ -159,10 +152,6 @@ export async function init() {
     scoreDiv = document.getElementById('score');
 }
 
-// performance monitoring
-const stats = new Stats();
-document.body.appendChild(stats.dom);
-
 // render function
 export function animate(currentTime) {
     // setting an id to the frame to stop the game in case of collision with obstacle
@@ -172,9 +161,6 @@ export function animate(currentTime) {
 
     if (delta >= interval) {
         previousTime = currentTime - (delta % interval);
-
-        // performance monitoring
-        stats.update();
 
         // rendering scene
         renderer.render(scene, camera);
