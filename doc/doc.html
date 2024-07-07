@@ -51,63 +51,43 @@
             in cui la mesh controllata dal giocatore deve evitare altre 
             mesh ostacoli che si muovono verso di esso.<br>
         </p>
-        <p>    
-            // da fare <br>
-            L'architettura del progetto consiste di due package:
+
+        <p class="aligncenter">
+            <img src="./resources/images/architecture.png" title="Architettura del progetto", height="700px">
+        </p>
+        
+        <p>
+            L'architettura del progetto consiste di tre file html:
             <ul>
-                <li><strong>scene</strong>, che contiene:
-                    <ul>
-                        <li><strong>scene.js:</strong>
-                            è la classe più in alto nella gerarchia, rappresenta 
-                            la scena e si occupa di gestire tutte le altre.
-                        </li>
-                        <li><strong>camera.js:</strong>
-                            è la classe che descrive la camera e ne gestisce i 
-                            movimenti nell'ambiente 3D.
-                        </li>
-                        <li><strong>mesh_obj:</strong>
-                            è la classe che rappresenta una mesh da disegnare.
-                        </li>
-                    </ul>
-                </li>
-                <li><strong>resources</strong>, che contiene le varie librerie 
-                    e funzioni di supporto utilizzate, tra cui:
-                    <ul>
-                        <li><strong>dat.gui.js</strong>: 
-                            utilizzata per gestire le impostazioni della scena
-                        </li>
-                        <li><strong>m4.js</strong>: 
-                            fornisce metodi utili per il calcolo matriciale
-                        </li>
-                        <li><strong>load_mesh.js</strong>: 
-                            contiene la funzione per leggere le mesh in formato 
-                            Wavefront OBJ e renderle utilizzabili da WebGL
-                        </li>
-                        <li><strong>webgl-utils.js</strong>:
-                            contiene funzioni wrapper per i metodi di WebGL
-                        </li>
-                        <li><strong>mouse_interaction.js</strong>:
-                            raccolta di funzioni per gestire gli eventi 
-                            prodotti da un mouse
-                        </li>
-                        <li><strong>touch_interaction.js</strong>:
-                            raccolta di funzioni per gestire gli eventi 
-                            generati da un dispositivo con schermo touch    
-                        </li>
-                        <li><strong>utils.js</strong>: 
-                            contiene funzioni di supporto
-                        </li>
-                    </ul>
-                </li>
-                <li><strong>main.js:</strong>
-                    entry point del programma, invoca i metodi necessari 
-                    a renderizzare la scena e renderla interagibile con 
-                    l'utente.
-                </li>
+                <li><strong>index.html</strong>, la pagina di benvenuto</li>
+                <li><strong>game.html</strong>, la pagina in cui si trova il 
+                    canvas su cui viene renderizzata la scena</li>
+                <li><strong>death.html</strong>, la pagina di game over, da 
+                    cui si può scegliere se avviare una nuova partita o tornare 
+                    alla pagina di benvenuto</li>
             </ul>
         </p>
-        <p class="aligncenter">
-            <img src="resources/images/architecture.png" title="Architettura del progetto", height="600">
+        <p>
+            Consideriamo la pagina <strong>game.html</strong>, che sfrutta 
+            <strong>main.js</strong> il quale rappresenta l'entry point del 
+            programma e si occupa di:
+            <ul>
+                <li>fare il binding degli eventi con i rispettivi handler</li>
+                <li>inizializzare gli elementi si scene</li>
+                <li>fare il rendering</li>
+            </ul>
+            Per fare queste operazioni utilizza <strong>scene.js</strong> che 
+            a sua volta appoggia alla classe <strong>Box</strong>, ma anche il 
+            package <strong>resources</strong> che contiene i vari file Javascript 
+            di utility, quali:
+            <ul>
+                <li>dat.gui.js, che è la libreria per la <strong>GUI a schermo</strong></li>
+                <li>keyboard_handler.js, che si occupa di gestire gli <strong>input 
+                    da tastiera</strong></li>
+                <li>touch_handler.js, che si occupa di gestire gli <strong>input da 
+                    schermi touch</strong></li>
+                <li>utils.js, che contiene <strong>funzioni di utility</strong></li>
+            </ul>
         </p>
 
         <h2 id="interfaccia">Interfaccia</h2>
