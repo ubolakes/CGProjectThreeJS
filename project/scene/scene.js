@@ -104,6 +104,8 @@ export async function init() {
     camera2.rotation.y = 3*Math.PI / 2;
 
     renderTarget = new THREE.WebGLRenderTarget(256, 256);
+    renderTarget.texture.repeat.x = -1;
+    renderTarget.texture.offset.x = 1;
     // geometry with the scene captured attached
     const mirrorMaterial = new THREE.MeshBasicMaterial({ map: renderTarget.texture });
     mirror = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), mirrorMaterial);
