@@ -16,9 +16,8 @@ let renderer, scene, camera;
 // mesh
 let player, ground;
 // reflection
-let mirrorCamera, mirror;
-let renderTarget;
-let scene2, camera2;
+let renderTarget, mirror;
+let mirrorCamera;
 // lights
 let directionalLight, spotLight;
 // obstacles
@@ -97,11 +96,9 @@ export async function init() {
     spotLight.target = player;
 
     // mirror
-    scene2 = new THREE.Scene();
-    //camera2 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 100);
-    camera2 = new THREE.PerspectiveCamera(70, 1, 0.1, 100 );
-    camera2.position.set(-8, 0, -4);
-    camera2.rotation.y = 3*Math.PI / 2;
+    mirrorCamera = new THREE.PerspectiveCamera(70, 1, 0.1, 100 );
+    mirrorCamera.position.set(-8, 0, -4);
+    mirrorCamera.rotation.y = 3*Math.PI / 2;
 
     renderTarget = new THREE.WebGLRenderTarget(256, 256);
     renderTarget.texture.repeat.x = -1;
@@ -181,13 +178,13 @@ export function animate(currentTime) {
         // checking if mirror enabled
         if (UTILS.params.mirrorEnabled) {
             renderer.setRenderTarget(renderTarget);
-            renderer.render(scene, camera2);
+            renderer.render(scene, mirrorCamera);
             renderer.setRenderTarget(null);
 
             // checking if mirror needs to be moved according to player z
             if (UTILS.params.mirrorFollow) {
                 // updating mirror z to always reflect the player
-                camera2.position.z = player.position.z;
+                mirrorCamera.position.z = player.position.z;
                 mirror.position.z = player.position.z;
             }
         }
