@@ -356,33 +356,43 @@
             L'implementazione di questa tecnica richiede più passi:
             <ul>
                 <li>
-                    creazione di un oggetto <strong>WebGLCubeRenderTarget</strong>, 
-                    che serve a rendere la scene come una texture cubica
+                    la generazione di una <strong>seconda camera</strong>, 
+                    con lo scopo di catturare la scena dal punto di vista 
+                    dello specchio
                 </li>
                 <li>
-                    istanziazione di una <strong>CubeCamera</strong>, il cui scopo 
-                    è catturare la scena in sei direzioni, ovvero le facce di un cubo
+                    la creazione di un oggetto <strong>WebGLRenderTarget</strong>, 
+                    che serve a rendere la scena dal POV della seconda camera 
+                    come una texture piana. Tramite le proprietà 
+                    <code>texture.repeat.x</code> e <code>texture.offset.x</code> 
+                    dell'oggetto WebGLRenderTarget l'output della camera viene 
+                    invertito lungo l'asse y
                 </li>
                 <li>
-                    generazione di una <strong>seconda scena</strong> e una 
-                    <strong>seconda camera</strong>, l'obiettivo è renderizzare 
-                    usando lo shader di riflessione
+                    l'istanziazione di un <strong>MeshBasicMaterial</strong> su 
+                    cui viene applicata la scena catturata dalla seconda camera
                 </li>
                 <li>
-                    creazione di uno <strong>ShaderMaterial</strong> allo scopo di gestire 
-                    la riflessione utilizzando degli shader personalizzati
+                    la generazione di una mesh con <strong>PlaneGeometry</strong> 
+                    e materiale dello specchio 
                 </li>
                 <li>
-                    istanziazione di una geometria su cui applicare la riflessione
+                    nella funzione di render inoltre si deve:
+                    <ul>
+                        <li>
+                            impostare come render target del renderer l'oggetto 
+                            <strong>renderTarget</strong> istanziato prima
+                        </li>
+                        <li>
+                            chiamare il <strong>render della scena vista della camera 
+                            dello specchio</strong>
+                        </li>
+                        <li>
+                            fare <strong>l'unbinding del renderTarget</strong> dal 
+                            renderer
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    generazione di un <strong>WebGLRenderTarget</strong> per renderizzare 
-                    la scena
-                </li>
-                <li>
-                    applicazione del materiale "dinamico" alla superficie piana
-                </li>
-                
             </ul>
         </p>
 
