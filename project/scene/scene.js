@@ -95,11 +95,13 @@ export async function init() {
     spotLight.target = player;
 
     // mirror
+    // camera to capture scene from mirror POV
     mirrorCamera = new THREE.PerspectiveCamera(70, 1, 0.1, 100 );
     mirrorCamera.position.set(-8, 0, -4);
     mirrorCamera.rotation.y = 3*Math.PI / 2;
-
+    // creating target for mirror scene
     renderTarget = new THREE.WebGLRenderTarget(256, 256);
+    // flipping scene horizontally
     renderTarget.texture.repeat.x = -1;
     renderTarget.texture.offset.x = 1;
     // geometry with the scene captured attached
