@@ -97,52 +97,15 @@ export async function init() {
     spotLight.target = player;
 
     // mirror
-    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
-    });
-    // camera to capture what happens along vertices
-    mirrorCamera = new THREE.CubeCamera(0.01, 100000, cubeRenderTarget);
-    mirrorCamera.position.set(-6, 1, -4);
-    mirrorCamera.rotation.y = Math.PI / 2;
-
     scene2 = new THREE.Scene();
     //camera2 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 100);
-    camera2 = new THREE.PerspectiveCamera(50, 1, 0.1, 100 );
-    camera2.position.z = 3;
-    // shader material to reflect
-    const material = new THREE.ShaderMaterial({
-        uniforms: {
-            cubemap: {value: cubeRenderTarget.texture}
-        },
-        vertexShader: `
-            varying vec2 vUv;
-            void main() {
-                vUv = uv;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-        `,
-        fragmentShader: `
-            uniform samplerCube cubemap;
-            varying vec2 vUv;
-
-            void main() {
-                vec3 direction = normalize(vec3(vUv * 2.0 - 1.0, 1.0));
-                vec3 color = textureCube(cubemap, direction).rgb;
-                gl_FragColor = vec4(color, 1.0);
-            }
-        `
-    });
-    
-    // geometry on which to stick the reflection
-    const reflection = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
-    scene2.add(reflection);
+    camera2 = new THREE.PerspectiveCamera(70, 1, 0.1, 100 );
+    camera2.position.set(-8, 0, -4);
+    camera2.rotation.y = 3*Math.PI / 2;
 
     renderTarget = new THREE.WebGLRenderTarget(256, 256);
-    // geometry with the reflection attached
-    const mirrorMaterial = new THREE.MeshBasicMaterial({ map: renderTarget.texture});
+    // geometry with the scene captured attached
+    const mirrorMaterial = new THREE.MeshBasicMaterial({ map: renderTarget.texture });
     mirror = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), mirrorMaterial);
     // setting position
     mirror.position.set(-6, 1, -4);
@@ -215,15 +178,14 @@ export function animate(currentTime) {
 
         // checking if mirror enabled
         if (UTILS.params.mirrorEnabled) {
-            mirrorCamera.update(renderer, scene);
             renderer.setRenderTarget(renderTarget);
-            renderer.render(scene2, camera2);
+            renderer.render(scene, camera2);
             renderer.setRenderTarget(null);
 
             // checking if mirror needs to be moved according to player z
             if (UTILS.params.mirrorFollow) {
                 // updating mirror z to always reflect the player
-                mirrorCamera.position.z = player.position.z;
+                camera2.position.z = player.position.z;
                 mirror.position.z = player.position.z;
             }
         }
