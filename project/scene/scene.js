@@ -57,7 +57,6 @@ export async function init() {
         alpha: true,
         antialias: false,
         canvas: canvas, // using canvas to render
-        //depth: true
     });
     renderer.shadowMap.enabled = true; // enabling shadows using shadow mapping
     renderer.setPixelRatio( window.devicePixelRatio * 0.7);
