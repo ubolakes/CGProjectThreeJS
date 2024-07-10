@@ -96,7 +96,7 @@ export async function init() {
 
     // mirror
     // camera to capture scene from mirror POV
-    mirrorCamera = new THREE.PerspectiveCamera(70, 1, 0.1, 100 );
+    mirrorCamera = new THREE.PerspectiveCamera(55, 1, 0.1, 100 );
     mirrorCamera.position.set(-8, 0, -4);
     mirrorCamera.rotation.y = 3*Math.PI / 2;
     // creating target for mirror scene
